@@ -21,7 +21,7 @@ export async function createAccount(accountToBeCreated) {
 }
 
 // Use this in an async function.
-// (the async keyword cna only be used in async functions)
+// (the AWAIT keyword can only be used in async functions)
 try{
     const bodyAsObject = await createAccount({
         username: "Alice",
