@@ -12,8 +12,8 @@ export default {
   name: "sign-up",
   data() {
     return {
-      username: "HardcodedName10",
-      password: "HardcodedPassword10",
+      username: "HardcodedName12",
+      password: "HardcodedPassword12",
       errors: [],
       success: Boolean
     }
