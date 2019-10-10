@@ -1,12 +1,13 @@
 const jwtDecode = require('jwt-decode') //när man skall decoda tokens senare...
 
+//omanvädbar
+const request = new XMLHttpRequest()
+const uri = "http://localhost:3000"
 
-exports.createAccount = function(account, callback) {
 
-  //const account = account
+exports.createAccount = function(account, callback) { //Create an account based on object from .vue
 
-  const request = new XMLHttpRequest()
-  request.open("POST", "http://localhost:3000/accounts") //type:POST på vald url
+  request.open("POST", uri+"/accounts") //type:POST på vald url
   request.setRequestHeader("Content-Type", "application/json") //Header inställd för JSON objekt
   request.send(JSON.stringify(account)) //Konvertera objektet till string (why tho?)
 
@@ -35,5 +36,80 @@ exports.createAccount = function(account, callback) {
         callback(["Unknown server error"])
     }
 
+  })
+}
+
+exports.getAllAccounts = function(callback){ //fetch all accounts
+
+  request.open("GET", uri+"/accounts")
+  request.send()
+
+  request.addEventListener("load", () => {
+
+    const status = request.status
+
+    switch(status) {
+
+      case 200:
+        const bodyAsString = request.responseText
+        const accounts = JSON.parse(bodyAsString)
+        callback([], accounts)
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
+
+    }
+  })
+}
+
+exports.getAccountById = function(id, callback) { //fetch one specific account from id
+
+  request.open("GET", uri+"/accounts/"+id)
+  request.send()
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+
+      case 200:
+        const bodyAsString = request.responseText
+        const account = JSON.parse(bodyAsString)
+        callback([], account)
+        break
+      case 500:
+        callback(["Server error"])
+        break
+      default:
+        callback(["Server error"])
+    }
+  })
+}
+
+exports.updateAccountById = function(id, updatedAccount, callback) {
+
+  request.open("PATCH", uri+"/accounts/"+id)
+  request.setRequestHeader("Content-Type", "application/json")
+  request.send(JSON.stringify(updatedAccount))
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+
+      case 200:
+        callback([])
+
+      case 500:
+        callback(["Server error"])
+        
+      default:
+        callback(["Server error"])
+    }
   })
 }
