@@ -135,10 +135,11 @@ exports.getAccountById = function(id, callback) { //fetch one specific account f
   })
 }
 
-exports.updateAccountById = function(id, updatedAccount, callback) {
+exports.updateAccountById = function(id, updatedAccount, accessToken, callback) {
 
   request.open("PUT", uri+"/accounts/"+id)
   request.setRequestHeader("Content-Type", "application/json")
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send(JSON.stringify(updatedAccount))
 
   request.addEventListener("load", () => {
@@ -166,9 +167,10 @@ exports.updateAccountById = function(id, updatedAccount, callback) {
   })
 }
 
-exports.deleteAccountById = function(id, callback) {
+exports.deleteAccountById = function(id, accessToken, callback) {
 
   request.open("DELETE", uri+"/accounts/"+id)
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
 
   request.addEventListener("load", () => {
@@ -177,9 +179,8 @@ exports.deleteAccountById = function(id, callback) {
     switch(status) {
 
       case 200:
-        const bodyAsString = response.responseText
-        const items = JSON.parse(bodyAsString)
-        callback([], items)
+        callback([])
+        break
 
       case 404:
         callback(["Account not found"])
@@ -206,25 +207,56 @@ exports.getAllItems = function(callback) {
     switch(status) {
 
       case 200:
+        const bodyAsString = request.responseText
+        const items = JSON.parse(bodyAsString)
         callback([], items)
+        break
 
       case 500:
         callback(["Server error"])
         break
 
       default:
-
+        callback(["Server error"])
     }
-
   })
+}
 
+exports.getItemById = function(id, callback) {
+
+  request.open("GET", uri+"/items/"+id)
+  request.send()
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+      case 200:
+        const bodyAsString = request.responseText
+        const item = JSON.parse(bodyAsString)
+        callback([], item)
+        break
+
+      case 404:
+        callback(["Not found"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
+    }
+  })
 }
 
 
-exports.createItem = function(item, callback) {
+exports.createItem = function(item, accessToken, callback) {
 
   request.open("POST", uri+"/items")
   request.setRequestHeader("Content-Type", "application/json") //Header inställd för JSON objekt
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send(JSON.stringify(item))
 
   request.addEventListener("load", () => {
@@ -244,6 +276,130 @@ exports.createItem = function(item, callback) {
       default:
       callback(["Server error"])
 
+    }
+  })
+}
+
+exports.updateItemById = function(id, updatedItem, accessToken, callback) {
+
+  request.open("PUT", uri+"/items/"+id)
+  request.setRequestHeader("Content-Type", "application/json")
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
+  request.send(JSON.stringify(updatedItem))
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+
+      case 200:
+
+      case 404:
+        callback(["Not found"])
+        break
+
+      case 422:
+        callback(["Unprocessable entry"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
+
+    }
+  })
+}
+
+exports.deleteItemById = function(id, accessToken, callback) {
+
+  request.open("DELETE", uri+"/items/"+id)
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
+  request.send()
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+
+      case 200:
+        callback([])
+        break
+
+      case 404:
+        callback(["Not found"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
+
+    }
+  })
+}
+
+exports.createComment = function(comment, id, accessToken, callback) {
+
+  request.open("POST", uri+"/items/"+id+"/comments")
+  request.setRequestHeader("Content-Type", "application/json")
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
+  request.send(JSON.stringify(comment))
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+      case 200:
+        callback([])
+        break
+
+      case 404:
+       callback(["No id found"])
+       break
+
+      case 422:
+        callback(["Unprocessable entry"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["No id found"])
+    }
+  })
+}
+
+exports.getCommentsByItemId = function(itemId, callback) {
+
+  request.open("GET", uri+"/items/"+itemId+"/comments")
+  request.send()
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+      case 200:
+        const bodyAsString = request.responseText
+        const comments = JSON.parse(bodyAsString)
+        callback([], comments)
+
+      case 404:
+        callback(["Item id not found"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
     }
   })
 }
