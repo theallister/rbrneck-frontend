@@ -1,14 +1,22 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/sign-up">Sign up</router-link>
-      <!--123-->
+      <Nav/>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+import Nav from '@/components/Nav.vue'
+
+export default {
+    name: 'App',
+    components: {
+      Nav
+    }
+}
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Oswald:700|Roboto:300,400&display=swap');
