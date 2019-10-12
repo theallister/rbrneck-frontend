@@ -11,6 +11,20 @@
 </template>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Oswald:700|Roboto:300,400&display=swap');
+
+.oswald {
+  font-family: 'Oswald', sans-serif;
+}
+.robotoThin {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+.robotoRegular {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
