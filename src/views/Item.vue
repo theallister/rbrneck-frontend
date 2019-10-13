@@ -49,14 +49,14 @@ export default {
           }
         })
       //Hämta kommentarerna länkat till detta item
-        client.getCommentsByItemId(id, (errors, comments) => {
-          this.errors = [] //clean up
-          if (errors.length == 0) {
-            this.comments = comments
-          } else {
-            this.errors = errors
-          }
-        })
+        // client.getCommentsByItemId(id, (errors, comments) => {
+        //   this.errors = [] //clean up
+        //   if (errors.length == 0) {
+        //     this.comments = comments
+        //   } else {
+        //     this.errors = errors
+        //   }
+        // })
     }
 }
 </script>

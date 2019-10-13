@@ -3,7 +3,7 @@
         <div class="feed-item-container" v-for="item in items" :key="item.id">
             <router-link :to="'/items/' + item.id" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
-                    <span class="robotoBold">{{item.username}}</span>
+                    <span class="robotoBold">{{"Placeholder"}}</span>
                     <span v-if="item.watched == 0"> is </span>
                     <span v-else-if="item.watched == 1"> was </span>
                     watching <span class="robotoBold">{{item.title}}</span>
@@ -29,7 +29,6 @@ export default {
         }
     },
     created() {
-
       client.getAllItems((errors, items) => {
         this.errors = []
         if (errors.length == 0) {
@@ -39,8 +38,15 @@ export default {
         }
       })
 
-    }
-
+    },
+    methods: {
+      // parseNameById(id) {
+      //
+      //   client.getAccountById(id, (errors, account) => {
+      //
+      //   })
+      // }
+    },
 }
 </script>
 
