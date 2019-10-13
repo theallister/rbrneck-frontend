@@ -33,7 +33,7 @@ exports.login = function(username, password, callback) {
       case 400:
         var bodyAsString = request.responseText
         var body = JSON.parse(bodyAsString)
-        callback([body.error])
+        callback([body.errors])
         break
 
       case 500:

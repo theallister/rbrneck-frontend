@@ -22,7 +22,7 @@ export default {
     name: 'signup'
 }
 </script>
-<style scoped>
+<style>
 .form-input-container {
     display: flex;
     flex-flow: column;

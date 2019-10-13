@@ -1,9 +1,9 @@
 <template>
     <div id="feed-container" class="view-container-main">
-        <div class="feed-item-container" v-for="item in mockItems" :key="item.id">
+        <div class="feed-item-container" v-for="item in items" :key="item.id">
             <router-link :to="'/items/' + 1" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
-                    <span class="robotoBold">{{item.username}}</span> 
+                    <span class="robotoBold">{{item.username}}</span>
                     <span v-if="item.watched == 0"> is </span>
                     <span v-else-if="item.watched == 1"> was </span>
                     watching <span class="robotoBold">{{item.title}}</span>
@@ -18,55 +18,26 @@
 </template>
 
 <script>
+const client = require("../rbrneck-client")
+
 export default {
     name: 'Home',
     data() {
         return {
-            mockItems: [
-                {
-                    id: 5,
-                    username: 'Alice',
-                    title: 'The Good Place',
-                    series: 1,
-                    season: 2,
-                    episode: 4,
-                    watched: 0
-                },
-                {
-                    id: 4,
-                    username: 'Frida',
-                    title: 'You',
-                    series: 1,
-                    season: 1,
-                    episode: 2,
-                    watched: 0
-                },
-                {
-                    id: 3,
-                    username: 'Alice',
-                    title: 'Juno',
-                    series: 0,
-                    watched: 1
-                },
-                {
-                    id: 2,
-                    username: 'Wille',
-                    title: 'Cowspiracy',
-                    series: 0,
-                    watched: 1
-                },
-                {
-                    id: 1,
-                    username: 'Ludde',
-                    title: 'Modern Family',
-                    series: 1,
-                    season: 9,
-                    episode: 12,
-                    watched: 1
-                }
-            ]
+            items: [],
+            errors: []
         }
+    },
+    created() {
+
+      client.getAllItems((errors, items) => {
+        if (errors.length == 0) {
+
+        }
+      })
+
     }
+
 }
 </script>
 

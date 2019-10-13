@@ -1,7 +1,7 @@
 <template>
     <div id="single-item-container" class="view-container-main red-background thick-border-left">
         <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
-        
+
         <div id="item-information" class="whitetext">
             <p class="robotoRegular uppercase item-information-details">{{item.username}} was watching</p>
             <h2 class="oswald uppercase">
@@ -25,6 +25,8 @@
     </div>
 </template>
 <script>
+const client = require("../rbrneck-client")
+
 export default {
     name: 'item',
     data() {
@@ -62,7 +64,7 @@ export default {
             ],
             newComment: ''
         }
-    }
+    },
 }
 </script>
 <style scoped>
@@ -134,7 +136,7 @@ export default {
         border: none;
         outline: none !important;
         border-radius: 0 10px 10px 0;
-        
+
         font-size: 1.7em;
 
         transition: 0.2s ease-in;

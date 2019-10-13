@@ -1,22 +1,11 @@
 <template>
     <div id="app">
       <div id="nav">
-        <!-- koden här är bara placeholder för att leka runt med layout - feel free att ta bort den sen ! -->
-          
-          <img id="nav-top-logo" src="./assets/clapperboard.png" alt="Icon made by Freepik from www.flaticon.com">
-          
-          <ul class="nav-list">
-            <li class="nav-list"><router-link :to="'/'" class="nav-link no-style-link uppercase oswald whitetext">home</router-link></li>
-            <li class="nav-list"><router-link :to="'/login'" class="nav-link no-style-link uppercase oswald whitetext">log in</router-link></li>
-            <li class="nav-list"><router-link :to="'/signup'" class="nav-link no-style-link uppercase oswald whitetext">sign up</router-link></li>
-            <li class="nav-list"><a href="" class="nav-link no-style-link uppercase oswald whitetext">about</a></li>
-          </ul>
-        
-        <Nav/>
+        <Nav :user="user"/>
       </div>
       <div id="routerview">
         <transition :name="transitionName">
-          <router-view/>
+          <router-view :user="user"/>
         </transition>
       </div>
     </div>
@@ -29,6 +18,13 @@ export default {
     name: 'App',
     data() {
       return {
+        user: {
+          isSignedIn: false,
+          username: "",
+          accessToken: "",
+          idToken: "",
+          id: Number
+        },
         transitionName: 'slide-left'
       }
     },
@@ -146,7 +142,7 @@ button, input {
 }
 body {
   margin: 0;
-  padding: 0;  
+  padding: 0;
 }
 #app {
   min-height: 100vh;
