@@ -32,7 +32,9 @@ export default {
 
       client.getAllItems((errors, items) => {
         if (errors.length == 0) {
-
+          this.items = items
+        } else {
+          this.errors = errors
         }
       })
 
