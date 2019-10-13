@@ -31,40 +31,33 @@ export default {
     name: 'item',
     data() {
         return {
-            item: {
-                    id: 5,
-                    username: 'Alice',
-                    title: 'The Good Place',
-                    series: 1,
-                    season: 2,
-                    episode: 4,
-                    watched: 0
-                },
-            comments: [
-                {
-                    id: 1,
-                    text: 'comment no 1'
-                },
-                {
-                    id: 2,
-                    text: 'this is the second comment on this post. might be this long? dunno'
-                },
-                {
-                    id: 3,
-                    text: 'third comment. probably not longer than that previous one, people arent that chatty, are they? anyway, third comment here!!'
-                },
-                {
-                    id: 4,
-                    text: 'fourth comment on this post!'
-                },
-                {
-                    id: 5,
-                    text: 'this is the fifth comment, lets goooo'
-                }
-            ],
+            item: {},
+            comments: [],
+            errors: [],
             newComment: ''
         }
     },
+    created() {
+      //Hämta that watch item bro
+        let id = this.$route.params.id
+        client.getItemById(id, (errors, item) => {
+          this.errors = [] //clean up
+          if (errors.length == 0) {
+            this.item = item
+          } else {
+            this.errors = errors
+          }
+        })
+      //Hämta kommentarerna länkat till detta item
+        client.getCommentsByItemId(id, (errors, comments) => {
+          this.errors = [] //clean up
+          if (errors.length == 0) {
+            this.comments = comments
+          } else {
+            this.errors = errors
+          }
+        })
+    }
 }
 </script>
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
     <div id="feed-container" class="view-container-main">
         <div class="feed-item-container" v-for="item in items" :key="item.id">
-            <router-link :to="'/items/' + 1" class="no-style-link">
+            <router-link :to="'/items/' + item.id" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
                     <span class="robotoBold">{{item.username}}</span>
                     <span v-if="item.watched == 0"> is </span>
@@ -31,6 +31,7 @@ export default {
     created() {
 
       client.getAllItems((errors, items) => {
+        this.errors = []
         if (errors.length == 0) {
           this.items = items
         } else {

@@ -35,7 +35,7 @@ export default {
     methods: {
       logIn() {
         client.login(this.username, this.password, (errors, id, username, idToken, accessToken) => {
-
+          this.errors = []
           if (errors.length == 0) {
             this.success = true
             //Korrigera prop i app.vue
