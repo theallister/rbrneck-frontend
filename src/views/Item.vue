@@ -39,6 +39,12 @@ export default {
     },
     created() {
       //Hämta that watch item bro
+      this.getItems()
+      //Hämta kommentarerna länkat till detta item //WTF DESSA TVÅ FUNKTIONER TAR UT VARANDRA???
+      this.getComments()
+    },
+    methods: {
+      getItems() {
         let id = this.$route.params.id
         client.getItemById(id, (errors, item) => {
           this.errors = [] //clean up
@@ -48,16 +54,18 @@ export default {
             this.errors = errors
           }
         })
-      //Hämta kommentarerna länkat till detta item
-        // client.getCommentsByItemId(id, (errors, comments) => {
-        //   this.errors = [] //clean up
-        //   if (errors.length == 0) {
-        //     this.comments = comments
-        //   } else {
-        //     this.errors = errors
-        //   }
-        // })
-    }
+      },
+      getComments() {
+        let id = this.$route.params.id
+        client.getCommentsByItemId(id, (errors, comments) => {
+          if (errors.length == 0) {
+            this.comments = comments
+          } else {
+            this.errors = errors
+          }
+        })
+      }
+    },
 }
 </script>
 <style scoped>
