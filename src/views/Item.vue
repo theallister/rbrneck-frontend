@@ -3,11 +3,25 @@
         <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
 
         <div id="item-information" class="whitetext">
-            <p class="robotoRegular uppercase item-information-details">{{item.username}} was watching</p>
-            <h2 class="oswald uppercase">
-                {{item.title}}
-            </h2>
-            <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
+            <span v-if="user.id !== item.accountId">
+                <p class="robotoRegular uppercase item-information-details">{{item.username}} 
+                    <span v-if="item.watched == 0">is</span>
+                    <span v-if="item.watched == 1">was</span>
+                    watching</p>
+                <h2 class="oswald uppercase">
+                    {{item.title}}
+                </h2>
+                <span v-if="item.series==1">
+                    <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
+                </span>
+            </span>
+            <span v-else>
+                <h2 class="oswald uppercase">you <span v-if="item.watched==0">are</span><span v-else>were</span> watching {{item.title}}</h2>
+                <span v-if="item.series==1">
+                    <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
+                </span>
+                <button v-if="item.watched==0" class="finish-watching oswald uppercase redtext" @click="finishWatching">finish watching</button>
+            </span>
         </div>
 
         <div id="item-comments">
@@ -16,7 +30,7 @@
             </div>
         </div>
 
-        <div id="item-comment-form"> <!-- add conditional: if logged in, if own's post-->
+        <div id="item-comment-form" v-if="(user.id == item.accountId) && (item.watched == 0)">
             <form @submit.prevent>
                 <textarea name="comment-input" id="comment-input" class="redtext robotoRegular" cols="30" rows="10" v-model="newComment" placeholder="add a comment..."></textarea>
                 <input type="submit" value="post" id="comment-submit" class="oswald uppercase redtext">
@@ -27,8 +41,10 @@
 <script>
 const client = require("../rbrneck-client")
 
+
 export default {
     name: 'item',
+    props: ['user'],
     data() {
         return {
           comments: {},
@@ -36,6 +52,7 @@ export default {
           errors: [],
           newComment: '',
           isLoading: true,
+          errorsFinish: []
         }
     },
      beforeMount() {
@@ -63,6 +80,18 @@ export default {
           })
         }
       }
+    },
+    methods: {
+        finishWatching() {
+            let itemId = this.$route.params.id
+            client.finishWatching(itemId, this.user.accessToken, (errors, id) => {
+                if(errors.length == 0) {
+                    
+                } else {
+                    this.errorsFinish = errors
+                }
+            })
+        }
     }
 }
 </script>
@@ -145,5 +174,11 @@ export default {
         width: 20%;
     }
 
-
+.finish-watching {
+    margin-top: 1%;
+    font-size: 1.2em;
+    padding: 0.5% 2%;
+    border: none;
+    border-radius: 40px;
+}
 </style>

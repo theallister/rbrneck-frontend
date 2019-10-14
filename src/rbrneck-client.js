@@ -325,6 +325,41 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
   })
 }
 
+exports.finishWatching = function(id, accessToken, callback) {
+
+  request.open("PATCH", uri+"/items/"+id)
+  request.setRequestHeader("Content-Type", "application/json")
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
+  request.send()
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+
+      case 200:
+        callback(["Success"])
+        break
+
+      case 404:
+        callback(["Not found"])
+        break
+
+      case 422:
+        callback(["Unprocessable entry"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
+
+    }
+  })
+}
+
 exports.deleteItemById = function(id, accessToken, callback) {
 
   request.open("DELETE", uri+"/items/"+id)

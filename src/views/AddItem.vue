@@ -4,7 +4,8 @@
         <form @submit.prevent class="robotoRegular">
             <span class="form-input-container">
                 <label for="input-username">what are you watching?</label>
-                <input type="text" name="username" id="input-username" class="redtext" v-model="title">
+                <input type="text" name="username" id="input-username" class="redtext" v-model="title" @input="titleHint=true">
+                <p class="input-hint robotoThin" v-if="titleHint">Write the title of what you are going to watch; {{title.length}}/50 characters.</p>
             </span>
             <span class="form-input-flex-row">
                 <input type="radio" name="seriesToggle" id="series" value="1" v-model.number="series" class="radioButtonHidden">
@@ -27,12 +28,11 @@
             </transition>
             <input type="submit" value="start watching" id="form-submit" class="redtext uppercase robotoBold" @click="addNewItem">
         </form>
-        <div class="error-msg-container">
+        <div class="error-msg-container robotoRegular">
             <p v-for="error in errors" :key="error.id">
                 {{error}}
             </p>
         </div>
-        <div v-if="success">success!</div>
     </div>
 </template>
 <script>
@@ -51,7 +51,8 @@ export default {
             episode: 0,
             watched: 0,
             errors: [],
-            success: false
+            success: false,
+            titleHint: false
         }
     },
     methods: {
@@ -77,6 +78,11 @@ export default {
 }
 </script>
 <style scoped>
+.input-hint {
+    font-size: 0.8em;
+    text-align: right;
+    margin-top: 0;
+}
 .form-input-flex-row {
     display: flex;
     flex-flow: row;
@@ -148,4 +154,9 @@ input[type="radio"]:checked + label {
     opacity: 1;
 }
 
+.error-msg-container {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+}
 </style>
