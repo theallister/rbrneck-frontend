@@ -7,10 +7,10 @@
                 <input type="text" name="username" id="input-username" class="redtext" v-model="title">
             </span>
             <span class="form-input-flex-row">
-                <input type="radio" name="seriesToggle" id="series" value="1" v-model="series" class="radioButtonHidden">
+                <input type="radio" name="seriesToggle" id="series" value="1" v-model.number="series" class="radioButtonHidden">
                 <label class="radioButtonLabel uppercase robotoBold" for="series">series</label>
 
-                <input type="radio" name="seriesToggle" id="movie" value="0" v-model="series" class="radioButtonHidden">
+                <input type="radio" name="seriesToggle" id="movie" value="0" v-model.number="series" class="radioButtonHidden">
                 <label class="radioButtonLabel uppercase robotoBold" for="movie">movie</label>
             </span>
             <transition name="input-transition">
@@ -49,24 +49,26 @@ export default {
             series: Number,
             season: 0,
             episode: 0,
+            watched: 0,
             errors: [],
             success: false
         }
     },
     methods: {
         addNewItem() {
-            const item = {
+            let item = {
                 accountId: this.accountId,
                 title: this.title,
                 series: this.series,
                 season: this.season,
-                episode: this.episode
+                episode: this.episode,
+                watched: this.watched
             }
-            client.createItem(this.item, this.user.accessToken, (errors, id) => {
-                if(errors.length == 0) {
-                    this.success = true
-                } else {
+            client.createItem(item, this.user.accessToken, (errors, id) => {
+                if(errors.length > 0) {
                     this.errors = errors
+                } else {
+                    this.success = true
                 }
             })
         }
