@@ -1,5 +1,5 @@
 <template>
-    <div id="single-item-container" class="view-container-main red-background thick-border-left">
+    <div v-if="this.isLoading == false" id="single-item-container" class="view-container-main red-background thick-border-left">
         <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
 
         <div id="item-information" class="whitetext">
@@ -29,53 +29,41 @@ const client = require("../rbrneck-client")
 
 export default {
     name: 'item',
-
     data() {
-      const itemId = this.$route.params.id
         return {
-            item: {},
-            itemId,
-            comments: [],
-            errors: [],
-            newComment: '',
-            isLoading: true,
+          comments: {},
+          item: {},
+          errors: [],
+          newComment: '',
+          isLoading: true,
         }
     },
-    computed: {
-      order(){
+     beforeMount() {
+       let itemId = this.$route.params.id
+          client.getItemById(itemId, (errors, item) => {
+           if (errors.length == 0) {
+             this.item = item
+             this.isLoading = false
+           } else {
+             this.errors = errors
+           }
+         })
+
+    },
+    watch: {
+      testFunction: function() {
+        let itemId = this.$route.params.id
         if (this.isLoading == false) {
-          this.getComments()
+          client.getCommentsByItemId(itemId, (errors, comments) => {
+            if (errors.length == 0) {
+              this.comments = comments
+            } else {
+              this.errors = errors
+            }
+          })
         }
-
       }
-    },
-    created() {
-      this.getItems()
-
-    },
-    methods: {
-      getItems() {
-        client.getItemById(this.itemId, (errors, item) => {
-          this.errors = [] //clean up
-          if (errors.length == 0) {
-            this.item = item
-            this.isLoading = false
-          } else {
-            this.errors = errors
-          }
-        })
-      },
-      getComments() {
-
-        client.getCommentsByItemId(this.itemId, (errors, comments) => {
-          if (errors.length == 0) {
-            this.comments = comments
-          } else {
-            this.errors = errors
-          }
-        })
-      }
-    },
+    }
 }
 </script>
 <style scoped>
