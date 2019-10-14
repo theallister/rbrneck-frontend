@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Item from './views/Item.vue'
 import SignUp from './views/SignUp.vue'
 import LogIn from './views/LogIn.vue'
+import AddItem from './views/AddItem.vue'
 
 Vue.use(Router)
 
@@ -30,6 +31,12 @@ export default new Router({
       name: 'login',
       props: true,
       component: LogIn
+    },
+    {
+      path: '/additem',
+      name: 'additem',
+      props: true,
+      component: AddItem
     }
   ]
 })

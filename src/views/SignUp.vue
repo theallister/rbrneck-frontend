@@ -13,7 +13,7 @@
                 <label for="input-password">password:</label>
                 <input type="password" name="password" id="input-password" class="redtext">
             </span>
-            <input type="submit" value="sign up" id="sign-up-form-submit" class="redtext uppercase robotoBold">
+            <input type="submit" value="sign up" id="form-submit" class="redtext uppercase robotoBold">
         </form>
     </div>
 </template>
@@ -42,7 +42,7 @@ export default {
 
     border: none;
 }
-#sign-up-form-submit {
+#form-submit {
     box-sizing: content-box;
     padding: 1% 5%;
     font-size: 1em;

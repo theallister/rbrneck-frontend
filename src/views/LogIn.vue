@@ -13,7 +13,7 @@
                 <label for="input-password">password:</label>
                 <input v-model="password" type="password" name="password" id="input-password" class="redtext">
             </span>
-            <input @click="logIn()" type="submit" value="Log in" id="sign-up-form-submit" class="redtext uppercase robotoBold">
+            <input @click="logIn()" type="submit" value="Log in" id="form-submit" class="redtext uppercase robotoBold">
         </form>
     </div>
 </template>
