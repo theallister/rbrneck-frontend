@@ -29,35 +29,45 @@ const client = require("../rbrneck-client")
 
 export default {
     name: 'item',
+
     data() {
+      const itemId = this.$route.params.id
         return {
             item: {},
+            itemId,
             comments: [],
             errors: [],
-            newComment: ''
+            newComment: '',
+            isLoading: true,
         }
     },
+    computed: {
+      order(){
+        if (this.isLoading == false) {
+          this.getComments()
+        }
+
+      }
+    },
     created() {
-      //Hämta that watch item bro
       this.getItems()
-      //Hämta kommentarerna länkat till detta item //WTF DESSA TVÅ FUNKTIONER TAR UT VARANDRA???
-      this.getComments()
+
     },
     methods: {
       getItems() {
-        let id = this.$route.params.id
-        client.getItemById(id, (errors, item) => {
+        client.getItemById(this.itemId, (errors, item) => {
           this.errors = [] //clean up
           if (errors.length == 0) {
             this.item = item
+            this.isLoading = false
           } else {
             this.errors = errors
           }
         })
       },
       getComments() {
-        let id = this.$route.params.id
-        client.getCommentsByItemId(id, (errors, comments) => {
+
+        client.getCommentsByItemId(this.itemId, (errors, comments) => {
           if (errors.length == 0) {
             this.comments = comments
           } else {
