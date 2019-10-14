@@ -263,7 +263,7 @@ exports.createItem = function(item, accessToken, callback) {
     const status = request.status
 
     switch(status) {
-      case 200:
+      case 201:
       const location = request.getResponseHeader("Location") //Vi vill ha ID:t och inte hela pathen
       const id = parseInt(location.substr("/items/".length)) //Genom att göra detta (ta bort stringen före numret)
       callback([], id) //sedan skickar vi id:t och en tom errors array
