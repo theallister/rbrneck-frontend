@@ -69,6 +69,7 @@ export default {
                     this.errors = errors
                 } else {
                     this.success = true
+                    this.$router.push('/items/' + id)
                 }
             })
         }
