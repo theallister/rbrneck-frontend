@@ -52,12 +52,12 @@ export default {
     methods: {
       getUsername: ((id) => {
           let account = {}
-          let username = ''
           client.getAccountById(id, (errors, account) => {
               if(errors.length == 0) {
                   account = account
-                  username = Object.values(account)[0]
+                  let username = Object.values(account)[0]
                   console.log(username)
+                  return username
               } else {
                   console.log('usernameerror:' + errors)
               }           

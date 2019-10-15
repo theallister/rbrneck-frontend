@@ -5,6 +5,7 @@ import Item from './views/Item.vue'
 import SignUp from './views/SignUp.vue'
 import LogIn from './views/LogIn.vue'
 import AddItem from './views/AddItem.vue'
+import About from './views/About.vue'
 
 Vue.use(Router)
 
@@ -38,6 +39,12 @@ export default new Router({
       name: 'additem',
       props: true,
       component: AddItem
+    },
+    {
+      path: '/about',
+      name: 'about',
+      props: true,
+      component: About
     }
   ]
 })
