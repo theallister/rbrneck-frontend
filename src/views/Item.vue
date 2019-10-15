@@ -16,7 +16,7 @@
                 </span>
             </span>
             <span v-else>
-                <h2 class="oswald uppercase">you <span v-if="item.watched==0">are</span><span v-else>were</span> watching {{item.title}}</h2>
+                <h2 class="oswald uppercase">you <span v-if="item.watched==0"><span v-if="isWatching">are</span></span><span v-if="item.watched==1 || !isWatching">were</span> watching {{item.title}}</h2>
                 <span v-if="item.series==1">
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
@@ -47,17 +47,38 @@ export default {
     name: 'item',
     props: ['user'],
     data() {
+        const itemId = this.$route.params.id
         return {
           comments: {},
           item: {},
-          errors: [],
+          errorsItems: [],
+          errorsComments: [],
           newComment: '',
-          isLoading: true,
+          isLoadingItem: true,
+          isLoadingComments: true,
           errorsFinish: [],
           isWatching: true
         }
     },
-     beforeMount() {
+    created() {
+        client.getItemById(this.itemId, (errors, item) => {
+            this.isLoadingItem = false
+            if(errors.length == 0) {
+                this.item = item   
+            } else {
+                this.errorsItems = errors
+            }
+        }),
+        client.getCommentsByItemId(this.itemId, (errors, comments) => {
+            this.isLoadingComments = false
+            if(errors.length == 0) {
+                this.comments = comments
+            } else {
+                this.errorsComments = errors
+            }
+        })
+    }
+     /*beforeMount() {
        let itemId = this.$route.params.id
           client.getItemById(itemId, (errors, item) => {
            if (errors.length == 0) {
@@ -82,7 +103,7 @@ export default {
           })
         }
       }
-    },
+    },*/
     methods: {
         finishWatching() {
             let itemId = this.$route.params.id
