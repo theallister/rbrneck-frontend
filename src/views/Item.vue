@@ -6,7 +6,7 @@
 
         <div id="item-information" class="whitetext">
             <span v-if="user.id !== item.accountId">
-                <p class="robotoRegular uppercase item-information-details">{{item.username}} 
+                <p class="robotoRegular uppercase item-information-details">{{item.username}}
                     <span v-if="item.watched == 0">is</span>
                     <span v-if="item.watched == 1">was</span>
                     watching</p>
@@ -51,8 +51,8 @@ export default {
     data() {
         const itemId = this.$route.params.id
         return {
-          comments: {},
-          item: {},
+          comments: [],
+          item: [],
           errorsItems: [],
           errorsComments: [],
           newComment: '',
@@ -67,11 +67,19 @@ export default {
         client.getItemById(this.itemId, (errors, item) => {
             this.isLoadingItem = false
             if(errors.length == 0) {
-                this.item = item   
+                this.item = item
             } else {
                 this.errorsItems = errors
             }
         })
+            client.getCommentsByItemId(this.itemId, (errors, comments) => {
+              if (errors.length == 0) {
+                this.comments = comments
+              } else {
+                this.errors = errors
+              }
+            })
+        },
         /*client.getCommentsByItemId(this.itemId, (errors, comments) => {
             this.isLoadingComments = false
             if(errors.length == 0) {
@@ -80,7 +88,6 @@ export default {
                 this.errorsComments = errors
             }
         })*/
-    },
      /*beforeMount() {
        let itemId = this.$route.params.id
           client.getItemById(itemId, (errors, item) => {
@@ -94,17 +101,6 @@ export default {
 
     },*/
     watch: {
-      isLoadingItem: function() {
-        if (this.isLoadingItem == false) {
-          client.getCommentsByItemId(this.itemId, (errors, comments) => {
-            if (errors.length == 0) {
-              this.comments = comments
-            } else {
-              this.errors = errors
-            }
-          })
-        }
-      }
     },
     methods: {
         finishWatching() {
