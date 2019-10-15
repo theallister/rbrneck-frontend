@@ -31,9 +31,7 @@ exports.login = function(username, password, callback) {
         break
 
       case 400:
-        var bodyAsString = request.responseText
-        var body = JSON.parse(bodyAsString)
-        callback([body.errors])
+        callback(["Invalid client"])
         break
 
       case 500:
@@ -64,9 +62,14 @@ exports.createAccount = function(account, callback) { //Create an account based 
         callback([], id) //sedan skickar vi id:t och en tom errors array
         break
 
+      case 422:
+        const errors = JSON.parse(request.responseText)
+        callback([errors])
+        break
+
       case 400:
         const errors = JSON.parse(request.responseText) //vad vi får tillbaka när statusen är 400(?)
-        callback(errors)
+        callback([errors])
         break
 
       case 500:
@@ -149,6 +152,11 @@ exports.updateAccountById = function(id, updatedAccount, accessToken, callback) 
 
       case 200:
         callback([])
+        break
+
+      case 401:
+        callback(["Not authenticated"])
+        break
 
       case 404:
         callback(["Account not found"])
@@ -178,8 +186,13 @@ exports.deleteAccountById = function(id, accessToken, callback) {
 
     switch(status) {
 
-      case 200:
+      case 204:
         callback([])
+        break
+
+      case 401:
+        const errors = JSON.parse(request.responseText)
+        callback([errors])
         break
 
       case 404:
@@ -436,6 +449,7 @@ exports.getCommentsByItemId = function(itemId, callback) {
         const bodyAsString = request.responseText
         const comments = JSON.parse(bodyAsString)
         callback([], comments)
+        break
 
       case 404:
         callback(["Item id not found"])
@@ -463,7 +477,7 @@ exports.deleteCommentById = function(itemId, commentId, accessToken, callback) {
       case 200:
         callback([])
         break
-        
+
       case 404:
         callback(["Not found"])
         break
