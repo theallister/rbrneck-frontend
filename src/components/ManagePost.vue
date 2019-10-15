@@ -1,38 +1,41 @@
 <template>
-<div>
+<div class="dropshadow">
     <transition name="fade">
         <div id="manage-post-pop-up" v-if="!editMode">
-            <button class="whitetext red-background oswald uppercase" @click="editMode=true">edit</button>
-            <button class="whitetext red-background oswald uppercase">delete</button>
-            <button class="whitetext uppercase oswald cancel-edit" @click="$emit('close')">cancel</button>
+            <button class="whitetext red-background oswald uppercase dropshadow" @click="editMode=true">edit</button>
+            <button class="whitetext red-background oswald uppercase dropshadow">delete</button>
+            <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="$emit('close')">cancel</button>
         </div>
     </transition>
 
     <transition name="fade">
         <div id="edit-post-form" v-if="editMode" class="robotoRegular redtext">
+            <h2 class="oswald uppercase">you are editing {{item.title}}</h2>
             <form @submit.prevent v-if="!success">
                 <span class="form-input-container">
-                    <label for="input-title">edit title</label>
+                    <label for="input-title">new title:</label>
                     <input type="text" name="username" id="input-title" class="whitetext red-background" v-model="newTitle" @input="titleHint=true">
-                    <p class="input-hint robotoRegular" v-if="titleHint">Write the new title of what you are watching; {{newTitle.length}}/50 characters.</p>
+                    <p class="input-hint robotoRegular" v-if="titleHint">Write your new title; {{newTitle.length}}/50 characters.</p>
                 </span>
                 
                 <span v-if="item.series==1">
                     <span class="form-input-flex-row shorter-input">
-                        <label for="season-input">season</label>
+                        <label for="season-input">season:</label>
                         <input type="number" min="0" name="season" id="season-input" class="whitetext red-background" v-model.number="newSeason">
                     </span>
                     <span class="form-input-flex-row shorter-input">
-                        <label for="episode-input">episode</label>
+                        <label for="episode-input">episode:</label>
                         <input type="number" min="0" name="episode" id="episode-input" class="whitetext red-background" v-model.number="newEpisode">
                     </span>
-                    <span class="form-input-flex-row cancel-submit-row">
-                        <button @click="editMode=false" class="whitetext uppercase robotoBold cancel-edit">cancel</button>
-                        <input type="submit" value="save changes" id="form-submit"  class="whitetext red-background uppercase robotoBold" @click="updateItem">
-                    </span>
                 </span>
+                    <span class="form-input-flex-row cancel-submit-row">
+                        <button @click="editMode=false" class="whitetext uppercase oswald cancel-edit">cancel</button>
+                        <input type="submit" value="save changes" id="form-submit"  class="whitetext red-background uppercase oswald" @click="updateItem">
+                    </span>
             </form>
-            <span v-else> item successfully updated </span>
+            <span v-else> item successfully updated 
+                <button class="whitetext uppercase oswald cancel-edit" @click="$emit('close')">OK!</button>
+            </span>
         </div>
     </transition>
 </div>
@@ -43,7 +46,7 @@ const client = require("../rbrneck-client")
 
 export default {
     name: 'managepost',
-    props: ['user', 'item', 'id'],
+    props: ['user', 'item'],
     data() {
         const item = this.item
         const user = this.user
@@ -63,12 +66,13 @@ export default {
     methods: {
         updateItem: function() {
             let updatedItem = {
-                newTitle: this.newTitle,
-                newSeason: this.newSeason,
-                newEpisode: this.newEpisode
+                title: this.newTitle,
+                season: this.newSeason,
+                episode: this.newEpisode
             }
             console.log(this.itemId)
             client.updateItemById(this.item.id, updatedItem, this.user.accessToken, (errors) => {
+                console.log('updated '+updatedItem)
                 if(errors.length == 0) {
                     this.success = true
                 } else {

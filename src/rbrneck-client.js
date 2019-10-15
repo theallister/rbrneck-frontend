@@ -318,8 +318,18 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
 
     switch(status) {
 
-      case 200:
+      case 201:
         callback([])
+        break
+
+      case 400:
+        callback(["Bad Request"])
+        break
+
+      case 401:
+        callback(["Not Authorized"])
+        break
+
       case 404:
         callback(["Not found"])
         break

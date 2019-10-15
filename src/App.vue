@@ -256,4 +256,9 @@ body {
     transform: translateX(0);
 }
 
+.dropshadow {
+  -webkit-box-shadow: -1px 1px 3px 0px rgba(0,0,0,0.4);
+  -moz-box-shadow: -1px 1px 3px 0px rgba(0,0,0,0.4);
+  box-shadow: -1px 1px 3px 0px rgba(0,0,0,0.4);
+}
 </style>

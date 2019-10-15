@@ -3,7 +3,7 @@
         
         <span class="flex-line-justify-content">
             <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
-            <button class="button-more" @click="managePost=true"></button>
+            <span><button v-if="user.id == item.accountId" class="button-more" @click="managePost=true"></button></span>
         </span>
         
 
@@ -26,7 +26,7 @@
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
                 <span v-if="isWatching">
-                    <button v-if="item.watched==0" class="finish-watching oswald uppercase redtext" @click="finishWatching">finish watching</button>
+                    <button v-if="item.watched==0" class="dropshadow finish-watching oswald uppercase redtext" @click="finishWatching">finish watching</button>
                 </span>
             </span>
         </div>
@@ -41,8 +41,8 @@
 
         <div id="item-comment-form" v-if="((user.id == item.accountId) && (item.watched == 0))">
             <form @submit.prevent v-if="isWatching">
-                <textarea name="comment-input" id="comment-input" class="redtext robotoRegular" cols="30" rows="10" v-model="newComment" placeholder="add a comment..."></textarea>
-                <input type="submit" value="post" id="comment-submit" class="oswald uppercase redtext">
+                <textarea name="comment-input" id="comment-input" class="dropshadow redtext robotoRegular" cols="30" rows="10" v-model="newComment" placeholder="add a comment..."></textarea>
+                <input type="submit" value="post" id="comment-submit" class="dropshadow oswald uppercase redtext">
             </form>
         </div>
 
@@ -77,7 +77,7 @@ export default {
           managePost: false
         }
     },
-    created() {
+    mounted() {
         client.getItemById(this.itemId, (errors, item) => {
             this.isLoadingItem = false
             if(errors.length == 0) {
@@ -107,11 +107,12 @@ export default {
                     console.log(errors)
                 }
             })
-        }
+        },
     },
     components: {
       ManagePost
-    }
+    },
+   
 }
 </script>
 <style scoped>
