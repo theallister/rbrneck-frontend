@@ -20,7 +20,9 @@
                 <span v-if="item.series==1">
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
-                <button v-if="item.watched==0" class="finish-watching oswald uppercase redtext" @click="finishWatching">finish watching</button>
+                <span v-if="isWatching">
+                    <button v-if="item.watched==0" class="finish-watching oswald uppercase redtext" @click="finishWatching">finish watching</button>
+                </span>
             </span>
         </div>
 
@@ -30,8 +32,8 @@
             </div>
         </div>
 
-        <div id="item-comment-form" v-if="(user.id == item.accountId) && (item.watched == 0)">
-            <form @submit.prevent>
+        <div id="item-comment-form" v-if="((user.id == item.accountId) && (item.watched == 0))">
+            <form @submit.prevent v-if="isWatching">
                 <textarea name="comment-input" id="comment-input" class="redtext robotoRegular" cols="30" rows="10" v-model="newComment" placeholder="add a comment..."></textarea>
                 <input type="submit" value="post" id="comment-submit" class="oswald uppercase redtext">
             </form>
@@ -40,7 +42,6 @@
 </template>
 <script>
 const client = require("../rbrneck-client")
-
 
 export default {
     name: 'item',
@@ -52,7 +53,8 @@ export default {
           errors: [],
           newComment: '',
           isLoading: true,
-          errorsFinish: []
+          errorsFinish: [],
+          isWatching: true
         }
     },
      beforeMount() {
@@ -84,11 +86,13 @@ export default {
     methods: {
         finishWatching() {
             let itemId = this.$route.params.id
-            client.finishWatching(itemId, this.user.accessToken, (errors, id) => {
+            client.finishWatching(itemId, this.user.accessToken, (errors) => {
                 if(errors.length == 0) {
-                    
+                    this.isWatching = false
+                    console.log(this.isWatching)
                 } else {
                     this.errorsFinish = errors
+                    console.log(errors)
                 }
             })
         }
