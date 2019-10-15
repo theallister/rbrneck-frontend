@@ -63,12 +63,12 @@ exports.createAccount = function(account, callback) { //Create an account based 
         break
 
       case 422:
-        const errors = JSON.parse(request.responseText)
+        errors = JSON.parse(request.responseText)
         callback([errors])
         break
 
       case 400:
-        const errors = JSON.parse(request.responseText) //vad vi får tillbaka när statusen är 400(?)
+        errors = JSON.parse(request.responseText) //vad vi får tillbaka när statusen är 400(?)
         callback([errors])
         break
 
@@ -168,6 +168,7 @@ exports.updateAccountById = function(id, updatedAccount, accessToken, callback) 
 
       case 500:
         callback(["Server error"])
+        break
 
       default:
         callback(["Server error"])
@@ -318,7 +319,7 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
     switch(status) {
 
       case 200:
-
+        callback([])
       case 404:
         callback(["Not found"])
         break
