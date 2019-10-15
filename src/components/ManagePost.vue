@@ -1,11 +1,26 @@
 <template>
 <div class="dropshadow">
     <transition name="fade">
-        <div id="manage-post-pop-up" v-if="!editMode">
+        <div id="manage-post-pop-up" v-if="!editMode && !confirmDelete">
             <button class="whitetext red-background oswald uppercase dropshadow" @click="editMode=true">edit</button>
-            <button class="whitetext red-background oswald uppercase dropshadow">delete</button>
+            <button class="whitetext red-background oswald uppercase dropshadow" @click="confirmDelete=true">delete</button>
             <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="$emit('close')">cancel</button>
         </div>
+    </transition>
+    <transition name="fade">
+        <span v-if="confirmDelete" id="confirm-delete-form">
+            <span v-if="!deleted">
+                <h2 class="oswald uppercase redtext text-align-center">Are you sure you want to delete this item?</h2>
+                <button class="whitetext red-background oswald uppercase dropshadow" @click="deleteItem">delete</button>
+                <button class="whitetext uppercase oswald cancel-edit" @click="confirmDelete=false">Cancel</button>
+            </span>
+            <span v-else>
+            <h2 class="redtext oswald text-align-center uppercase">Item deleted!</h2>
+            <router-link :to="'/'">
+                <button class="whitetext uppercase oswald cancel-edit">Back to home</button>
+            </router-link>
+            </span>
+        </span>
     </transition>
 
     <transition name="fade">
@@ -38,6 +53,8 @@
             </span>
         </div>
     </transition>
+    
+    
 </div>
 </template>
 
@@ -56,8 +73,10 @@ export default {
             newSeason: 0,
             newEpisode: 0,
             success: false,
+            deleted: false,
             errors: [],
-            titleHint: false
+            titleHint: false,
+            confirmDelete: false
         }
     },
     created() {
@@ -70,7 +89,6 @@ export default {
                 season: this.newSeason,
                 episode: this.newEpisode
             }
-            console.log(this.itemId)
             client.updateItemById(this.item.id, updatedItem, this.user.accessToken, (errors) => {
                 console.log('updated '+updatedItem)
                 if(errors.length == 0) {
@@ -79,12 +97,22 @@ export default {
                     this.errors = errors
                 }
             })
+        },
+        deleteItem: function() {
+            client.deleteItemById(this.item.id, this.user.accessToken, (errors) => {
+                if(errors.length == 0) {
+                    this.deleted = true
+                } else {
+                    this.errors.push(errors)
+                }
+            })
         }
+
     }
 }
 </script>
 <style scoped>
-#manage-post-pop-up, #edit-post-form {
+#manage-post-pop-up, #edit-post-form, #confirm-delete-form, #confirm-delete-form span {
     background-color: #fefefe;
     position: fixed;
     top: 35%;
@@ -101,7 +129,8 @@ export default {
     align-content: space-around;
     justify-content: center;
 }
-#manage-post-pop-up button {
+#manage-post-pop-up button,
+#confirm-delete-form button {
     margin: 5%;
     padding: 2% 7.5%;
 

@@ -395,7 +395,7 @@ exports.deleteItemById = function(id, accessToken, callback) {
 
     switch(status) {
 
-      case 200:
+      case 204:
         callback([])
         break
 
