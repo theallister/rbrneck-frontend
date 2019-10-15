@@ -265,6 +265,35 @@ exports.getItemById = function(id, callback) {
   })
 }
 
+exports.getItemsByAccountId = function(id, callback) {
+  const request = new XMLHttpRequest()
+  request.open("GET", uri+"/accounts/"+id+'/items')
+  request.send()
+
+  request.addEventListener("load", () => {
+
+    const status = request.status
+
+    switch(status) {
+      case 200:
+        const bodyAsString = request.responseText
+        const items = JSON.parse(bodyAsString)
+        callback([], items)
+        break
+
+      case 404:
+        callback(["Not found"])
+        break
+
+      case 500:
+        callback(["Server error"])
+        break
+
+      default:
+        callback(["Server error"])
+    }
+  })
+}
 
 exports.createItem = function(item, accessToken, callback) {
   const request = new XMLHttpRequest()

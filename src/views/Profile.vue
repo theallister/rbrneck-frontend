@@ -25,7 +25,7 @@ export default {
     }
   },
   created() {
-    client.getAllItems((errors, items) => {
+    client.getItemsByAccountId(this.user.id,(errors, items) => {
       if (errors.length == 0) {
         this.success = true
         this.items = items
