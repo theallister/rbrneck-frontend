@@ -1,8 +1,10 @@
 <template>
     <div id="single-item-container" class="view-container-main red-background thick-border-left">
-        <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
-
-        {{$route.params.id}}
+        <span class="flex-line-justify-content">
+            <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
+            <button class="button-more"></button>
+        </span>
+        
 
         <div id="item-information" class="whitetext">
             <span v-if="user.id !== item.accountId">
@@ -28,7 +30,7 @@
             </span>
         </div>
 
-        <div id="item-comments">
+        <div id="item-comments" v-if="comments.length>0">
             <div class="comment-container graytext" v-for="comment in comments" :key="comment.id">
                 <div class="comment-container-content robotoThin ">{{comment.text}}</div>
             </div>
@@ -72,35 +74,14 @@ export default {
                 this.errorsItems = errors
             }
         })
-            client.getCommentsByItemId(this.itemId, (errors, comments) => {
-              if (errors.length == 0) {
-                this.comments = comments
-              } else {
-                this.errors = errors
-              }
-            })
-        },
-        /*client.getCommentsByItemId(this.itemId, (errors, comments) => {
-            this.isLoadingComments = false
-            if(errors.length == 0) {
+        client.getCommentsByItemId(this.itemId, (errors, comments) => {
+            this.isLoadingComments = false;
+            if (errors.length == 0) {
                 this.comments = comments
             } else {
-                this.errorsComments = errors
+                this.errors = errors
             }
-        })*/
-     /*beforeMount() {
-       let itemId = this.$route.params.id
-          client.getItemById(itemId, (errors, item) => {
-           if (errors.length == 0) {
-             this.item = item
-             this.isLoading = false
-           } else {
-             this.errors = errors
-           }
-         })
-
-    },*/
-    watch: {
+        })
     },
     methods: {
         finishWatching() {
@@ -123,6 +104,12 @@ export default {
 #item-information {
     text-align: center;
     margin-bottom: 10px;
+}
+.flex-line-justify-content {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
     .item-information-details {
         margin: 0;

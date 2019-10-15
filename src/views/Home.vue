@@ -1,5 +1,14 @@
 <template>
     <div id="feed-container" class="view-container-main">
+
+        <div class="feed-item-container top-item-container" v-if="user.isSignedIn">
+            <router-link :to="'/additem'" class="no-style-link">
+                    <h2 class="oswald uppercase redtext">
+                        start watching
+                    </h2>     
+            </router-link>
+        </div>
+
         <div class="feed-item-container" v-for="item in items" :key="item.id">
             <router-link :to="'/items/' + item.id" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
@@ -14,6 +23,7 @@
                 </span>
             </router-link>
         </div>
+
     </div>
 </template>
 
@@ -22,6 +32,7 @@ const client = require("../rbrneck-client")
 
 export default {
     name: 'Home',
+    props: ['user'],
     data() {
         return {
             items: {},
@@ -61,8 +72,18 @@ export default {
 .feed-item-container:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
+.top-item-container {
+    background-color: #fefefe;
+    text-align: center;
+    padding: 1.5%;
+    transition: all 0.5s ease;
+}
+.top-item-container:hover {
+    background-color: #fefefe;
+    box-shadow: 0px 5px 0 #8e0e00;
+}
 .feed-item-text  {
-    width: 100%;
+    width: 91%;
     font-size: 1.5em;
 }
 .feed-item-right-side {
@@ -70,7 +91,7 @@ export default {
     right: 0;
     top: 0;
     width: 8%;
-    padding-left: 1.5%;
+    padding-left: 0;
     height: 100%;
     border-radius: 0 30px 30px 0;
 
