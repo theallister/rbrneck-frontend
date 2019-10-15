@@ -450,3 +450,30 @@ exports.getCommentsByItemId = function(itemId, callback) {
     }
   })
 }
+
+exports.deleteCommentById = function(itemId, commentId, accessToken, callback) {
+  request.open("DELETE", uri+"/items/"+itemId+"/comments/"+commentId)
+  request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
+  request.send()
+
+  request.addEventListener("load", () => {
+    const status = request.status
+
+    switch(status) {
+      case 200:
+        callback([])
+        break
+        
+      case 404:
+        callback(["Not found"])
+        break
+
+      case 500:
+        callback(["Server errror"])
+        break
+
+      default:
+        callback(["Server errror"])
+    }
+  })
+}

@@ -14,6 +14,7 @@
                 <input v-model="password" type="password" name="password" id="input-password" class="redtext">
             </span>
             <input @click="logIn()" type="submit" value="Log in" id="form-submit" class="redtext uppercase robotoBold">
+            <input @click="deleteCommentById()" type="submit" value="Delete" class="redtext uppercase robotoBold">
         </form>
     </div>
 </template>
@@ -47,6 +48,17 @@ export default {
             //Redirect till hem
             this.$router.push('/')
 
+          } else {
+            this.errors = errors
+          }
+        })
+      },
+      deleteCommentById() {
+        let itemId = 1
+        let commentId = 2
+        client.deleteCommentById(itemId, commentId, this.user.accessToken, (errors) => {
+          if (errors.length == 0) {
+            this.success = true
           } else {
             this.errors = errors
           }
