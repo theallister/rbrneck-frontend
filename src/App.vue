@@ -140,13 +140,14 @@ button, input {
 }
 .button-more {
   width: 3em;
-  height: 3em;
+  height: 2.5em;
+  margin-bottom: 0.5em;
   background-color: rgba(0,0,0,0);
   border: none;
   background-image: url('assets/more.png');
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top center;
 }
 
 * {

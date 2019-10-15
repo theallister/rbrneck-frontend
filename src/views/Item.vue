@@ -1,8 +1,9 @@
 <template>
     <div id="single-item-container" class="view-container-main red-background thick-border-left">
+        
         <span class="flex-line-justify-content">
             <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
-            <button class="button-more"></button>
+            <button class="button-more" @click="managePost=true"></button>
         </span>
         
 
@@ -30,10 +31,12 @@
             </span>
         </div>
 
-        <div id="item-comments" v-if="comments.length>0">
-            <div class="comment-container graytext" v-for="comment in comments" :key="comment.id">
-                <div class="comment-container-content robotoThin ">{{comment.text}}</div>
-            </div>
+        <div id="item-comments">
+            <span v-if="comments.length>0">
+                <div class="comment-container graytext" v-for="comment in comments" :key="comment.id">
+                    <div class="comment-container-content robotoThin ">{{comment.text}}</div>
+                </div>
+            </span>
         </div>
 
         <div id="item-comment-form" v-if="((user.id == item.accountId) && (item.watched == 0))">
@@ -42,10 +45,18 @@
                 <input type="submit" value="post" id="comment-submit" class="oswald uppercase redtext">
             </form>
         </div>
+
+        <transition name="fade">
+            <div v-if="managePost" id="manage-post-overlay">
+                <ManagePost :user="user" :item="item" @close="managePost=false"/>
+            </div>
+        </transition>
+
     </div>
 </template>
 <script>
 const client = require("../rbrneck-client")
+import ManagePost from '@/components/ManagePost.vue'
 
 export default {
     name: 'item',
@@ -62,7 +73,8 @@ export default {
           isLoadingComments: true,
           errorsFinish: [],
           isWatching: true,
-          itemId
+          itemId,
+          managePost: false
         }
     },
     created() {
@@ -96,6 +108,9 @@ export default {
                 }
             })
         }
+    },
+    components: {
+      ManagePost
     }
 }
 </script>
@@ -110,13 +125,14 @@ export default {
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
+    margin-right: -3%;
 }
     .item-information-details {
         margin: 0;
         font-size: 0.7em;
     }
 #item-comments {
-    flex-basis: 75vh;
+    flex-basis: 70vh;
     flex-grow: 0;
     overflow: scroll
 }
@@ -190,5 +206,21 @@ export default {
     padding: 0.5% 2%;
     border: none;
     border-radius: 40px;
+}
+#manage-post-overlay {
+    width: 64%;
+    height: 100vh;
+    background-color: rgba(14,14,14,0.5);
+    background-blend-mode: multiply;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease-in;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
