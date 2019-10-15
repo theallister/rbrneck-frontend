@@ -3,7 +3,7 @@
       <img id="nav-top-logo" src="../assets/clapperboard.png" alt="Icon made by Freepik from www.flaticon.com">
       <ul v-if="this.user.isSignedIn" class="nav-list">
         <li class="nav-list"><router-link :to="'/'" class="nav-link no-style-link uppercase oswald whitetext">home</router-link></li>
-        <li class="nav-list"><router-link :to="'/'" class="nav-link no-style-link uppercase oswald whitetext">profile</router-link></li>
+        <li class="nav-list"><router-link :to="'/profile'" class="nav-link no-style-link uppercase oswald whitetext">profile</router-link></li>
         <li class="nav-list" @click="signOut()"><router-link :to="'/'" class="nav-link no-style-link uppercase oswald whitetext">sign out</router-link></li>
         <li class="nav-list"><router-link :to="'/additem'" class="nav-link no-style-link uppercase oswald whitetext">watch</router-link></li>
 
