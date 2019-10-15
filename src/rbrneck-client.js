@@ -1,11 +1,11 @@
 const jwtDecode = require('jwt-decode') //när man skall decoda tokens senare...
 
 //omanvädbar
-const request = new XMLHttpRequest()
+
 const uri = "http://localhost:3000"
 
 exports.login = function(username, password, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("POST", uri+"/tokens")
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
   request.send("grant_type=password&username="+encodeURIComponent(username)+"&password="+encodeURIComponent(password))
@@ -45,7 +45,7 @@ exports.login = function(username, password, callback) {
 }
 
 exports.createAccount = function(account, callback) { //Create an account based on object from .vue
-
+  const request = new XMLHttpRequest()
   request.open("POST", uri+"/accounts") //type:POST på vald url
   request.setRequestHeader("Content-Type", "application/json") //Header inställd för JSON objekt
   request.send(JSON.stringify(account)) //Konvertera objektet till string (why tho?)
@@ -84,7 +84,7 @@ exports.createAccount = function(account, callback) { //Create an account based 
 }
 
 exports.getAllAccounts = function(callback){ //fetch all accounts
-
+  const request = new XMLHttpRequest()
   request.open("GET", uri+"/accounts")
   request.send()
 
@@ -112,7 +112,7 @@ exports.getAllAccounts = function(callback){ //fetch all accounts
 }
 
 exports.getAccountById = function(id, callback) { //fetch one specific account from id
-
+  const request = new XMLHttpRequest()
   request.open("GET", uri+"/accounts/"+id)
   request.send()
 
@@ -139,7 +139,7 @@ exports.getAccountById = function(id, callback) { //fetch one specific account f
 }
 
 exports.updateAccountById = function(id, updatedAccount, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("PUT", uri+"/accounts/"+id)
   request.setRequestHeader("Content-Type", "application/json")
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
@@ -177,7 +177,7 @@ exports.updateAccountById = function(id, updatedAccount, accessToken, callback) 
 }
 
 exports.deleteAccountById = function(id, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("DELETE", uri+"/accounts/"+id)
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
@@ -210,7 +210,7 @@ exports.deleteAccountById = function(id, accessToken, callback) {
   })
 }
 exports.getAllItems = function(callback) {
-
+  const request = new XMLHttpRequest()
   request.open("GET", uri+"/items")
   request.send()
 
@@ -237,7 +237,7 @@ exports.getAllItems = function(callback) {
 }
 
 exports.getItemById = function(id, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("GET", uri+"/items/"+id)
   request.send()
 
@@ -267,7 +267,7 @@ exports.getItemById = function(id, callback) {
 
 
 exports.createItem = function(item, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("POST", uri+"/items")
   request.setRequestHeader("Content-Type", "application/json") //Header inställd för JSON objekt
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
@@ -307,7 +307,7 @@ exports.createItem = function(item, accessToken, callback) {
 }
 
 exports.updateItemById = function(id, updatedItem, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("PUT", uri+"/items/"+id)
   request.setRequestHeader("Content-Type", "application/json")
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
@@ -340,9 +340,9 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
 }
 
 exports.finishWatching = function(id, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("PATCH", uri+"/items/"+id)
-  
+
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
 
@@ -375,7 +375,7 @@ exports.finishWatching = function(id, accessToken, callback) {
 }
 
 exports.deleteItemById = function(id, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("DELETE", uri+"/items/"+id)
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
@@ -405,7 +405,7 @@ exports.deleteItemById = function(id, accessToken, callback) {
 }
 
 exports.createComment = function(comment, id, accessToken, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("POST", uri+"/items/"+id+"/comments")
   request.setRequestHeader("Content-Type", "application/json")
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
@@ -438,7 +438,7 @@ exports.createComment = function(comment, id, accessToken, callback) {
 }
 
 exports.getCommentsByItemId = function(itemId, callback) {
-
+  const request = new XMLHttpRequest()
   request.open("GET", uri+"/items/"+itemId+"/comments")
   request.send()
 
@@ -467,6 +467,7 @@ exports.getCommentsByItemId = function(itemId, callback) {
 }
 
 exports.deleteCommentById = function(itemId, commentId, accessToken, callback) {
+  const request = new XMLHttpRequest()
   request.open("DELETE", uri+"/items/"+itemId+"/comments/"+commentId)
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
