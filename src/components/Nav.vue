@@ -12,7 +12,7 @@
         <li class="nav-list"><router-link :to="'/'" class="nav-link no-style-link uppercase oswald whitetext">home</router-link></li>
         <li class="nav-list"><router-link :to="'/login'" class="nav-link no-style-link uppercase oswald whitetext">log in</router-link></li>
         <li class="nav-list"><router-link :to="'/signup'" class="nav-link no-style-link uppercase oswald whitetext">sign up</router-link></li>
-        <li class="nav-list"><a href="" class="nav-link no-style-link uppercase oswald whitetext">about</a></li>
+        <li class="nav-list"><router-link :to="'/about'" class="nav-link no-style-link uppercase oswald whitetext">about</router-link></li>
       </ul>
 
   </div>
