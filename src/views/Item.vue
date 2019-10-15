@@ -1,6 +1,8 @@
 <template>
-    <div v-if="this.isLoading == false" id="single-item-container" class="view-container-main red-background thick-border-left">
+    <div id="single-item-container" class="view-container-main red-background thick-border-left">
         <router-link :to="'/'"><button class="button-arrow-to-left"></button></router-link>
+
+        {{$route.params.id}}
 
         <div id="item-information" class="whitetext">
             <span v-if="user.id !== item.accountId">
@@ -57,7 +59,8 @@ export default {
           isLoadingItem: true,
           isLoadingComments: true,
           errorsFinish: [],
-          isWatching: true
+          isWatching: true,
+          itemId
         }
     },
     created() {
@@ -68,16 +71,16 @@ export default {
             } else {
                 this.errorsItems = errors
             }
-        }),
-        client.getCommentsByItemId(this.itemId, (errors, comments) => {
+        })
+        /*client.getCommentsByItemId(this.itemId, (errors, comments) => {
             this.isLoadingComments = false
             if(errors.length == 0) {
                 this.comments = comments
             } else {
                 this.errorsComments = errors
             }
-        })
-    }
+        })*/
+    },
      /*beforeMount() {
        let itemId = this.$route.params.id
           client.getItemById(itemId, (errors, item) => {
@@ -89,12 +92,11 @@ export default {
            }
          })
 
-    },
+    },*/
     watch: {
-      testFunction: function() {
-        let itemId = this.$route.params.id
-        if (this.isLoading == false) {
-          client.getCommentsByItemId(itemId, (errors, comments) => {
+      isLoadingItem: function() {
+        if (this.isLoadingItem == false) {
+          client.getCommentsByItemId(this.itemId, (errors, comments) => {
             if (errors.length == 0) {
               this.comments = comments
             } else {
@@ -103,7 +105,7 @@ export default {
           })
         }
       }
-    },*/
+    },
     methods: {
         finishWatching() {
             let itemId = this.$route.params.id
