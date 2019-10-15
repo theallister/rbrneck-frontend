@@ -38,30 +38,6 @@ export default {
         } else {
           this.errors = errors
         }
-      }),
-      client.getAllAccounts((errors, accounts) => {
-          this.errorsAcc = []
-          if(errors.length == 0) {
-              this.accounts = accounts
-          } else {
-              this.errorsAcc = errors
-          }
-      })
-
-    },
-    methods: {
-      getUsername: ((id) => {
-          let account = {}
-          client.getAccountById(id, (errors, account) => {
-              if(errors.length == 0) {
-                  account = account
-                  let username = Object.values(account)[0]
-                  console.log(username)
-                  return username
-              } else {
-                  console.log('usernameerror:' + errors)
-              }           
-          })
       })
     }
 }
