@@ -328,7 +328,7 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
 exports.finishWatching = function(id, accessToken, callback) {
 
   request.open("PATCH", uri+"/items/"+id)
-  request.setRequestHeader("Content-Type", "application/json")
+  
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
 
@@ -337,8 +337,8 @@ exports.finishWatching = function(id, accessToken, callback) {
 
     switch(status) {
 
-      case 200:
-        callback(["Success"])
+      case 204:
+        callback([])
         break
 
       case 404:

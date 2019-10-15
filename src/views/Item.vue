@@ -16,7 +16,7 @@
                 </span>
             </span>
             <span v-else>
-                <h2 class="oswald uppercase">you <span v-if="item.watched==0">are</span><span v-else>were</span> watching {{item.title}}</h2>
+                <h2 class="oswald uppercase">you <span v-if="item.watched==0"><span v-if="isWatching">are</span></span><span v-if="item.watched==1 || !isWatching">were</span> watching {{item.title}}</h2>
                 <span v-if="item.series==1">
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
@@ -47,6 +47,7 @@ export default {
     name: 'item',
     props: ['user'],
     data() {
+        const itemId = this.$route.params.id
         return {
           comments: {},
           item: {},
