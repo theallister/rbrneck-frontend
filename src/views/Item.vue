@@ -51,14 +51,34 @@ export default {
         return {
           comments: {},
           item: {},
-          errors: [],
+          errorsItems: [],
+          errorsComments: [],
           newComment: '',
-          isLoading: true,
+          isLoadingItem: true,
+          isLoadingComments: true,
           errorsFinish: [],
           isWatching: true
         }
     },
-     beforeMount() {
+    created() {
+        client.getItemById(this.itemId, (errors, item) => {
+            this.isLoadingItem = false
+            if(errors.length == 0) {
+                this.item = item   
+            } else {
+                this.errorsItems = errors
+            }
+        }),
+        client.getCommentsByItemId(this.itemId, (errors, comments) => {
+            this.isLoadingComments = false
+            if(errors.length == 0) {
+                this.comments = comments
+            } else {
+                this.errorsComments = errors
+            }
+        })
+    }
+     /*beforeMount() {
        let itemId = this.$route.params.id
           client.getItemById(itemId, (errors, item) => {
            if (errors.length == 0) {
@@ -83,7 +103,7 @@ export default {
           })
         }
       }
-    },
+    },*/
     methods: {
         finishWatching() {
             let itemId = this.$route.params.id
