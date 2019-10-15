@@ -45,6 +45,7 @@ export default {
         const user = this.user
         return {
             accountId: user.id,
+            username: user.username,
             title: '',
             series: Number,
             season: 0,
@@ -59,6 +60,7 @@ export default {
         addNewItem() {
             let item = {
                 accountId: this.accountId,
+                username: this.username,
                 title: this.title,
                 series: this.series,
                 season: this.season,

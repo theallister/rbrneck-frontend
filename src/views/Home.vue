@@ -3,7 +3,7 @@
         <div class="feed-item-container" v-for="item in items" :key="item.id">
             <router-link :to="'/items/' + item.id" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
-                    <span class="robotoBold">{{getUsername(item.accountId)}}</span>
+                    <span class="robotoBold">{{item.username}}</span>
                     <span v-if="item.watched == 0"> is </span>
                     <span v-else-if="item.watched == 1"> was </span>
                     watching <span class="robotoBold">{{item.title}}</span>
