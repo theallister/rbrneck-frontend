@@ -3,7 +3,7 @@
         <div class="feed-item-container" v-for="item in items" :key="item.id">
             <router-link :to="'/items/' + item.id" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
-                    <span class="robotoBold">{{"Placeholder"}}</span>
+                    <span class="robotoBold">{{getUsername(item.accountId)}}</span>
                     <span v-if="item.watched == 0"> is </span>
                     <span v-else-if="item.watched == 1"> was </span>
                     watching <span class="robotoBold">{{item.title}}</span>
@@ -24,8 +24,10 @@ export default {
     name: 'Home',
     data() {
         return {
-            items: [],
-            errors: []
+            items: {},
+            accounts: {},
+            errors: [],
+            errorsAcc: []
         }
     },
     created() {
@@ -36,17 +38,32 @@ export default {
         } else {
           this.errors = errors
         }
+      }),
+      client.getAllAccounts((errors, accounts) => {
+          this.errorsAcc = []
+          if(errors.length == 0) {
+              this.accounts = accounts
+          } else {
+              this.errorsAcc = errors
+          }
       })
 
     },
     methods: {
-      // parseNameById(id) {
-      //
-      //   client.getAccountById(id, (errors, account) => {
-      //
-      //   })
-      // }
-    },
+      getUsername: ((id) => {
+          let account = {}
+          let username = ''
+          client.getAccountById(id, (errors, account) => {
+              if(errors.length == 0) {
+                  account = account
+                  username = Object.values(account)[0]
+                  console.log(username)
+              } else {
+                  console.log('usernameerror:' + errors)
+              }           
+          })
+      })
+    }
 }
 </script>
 
