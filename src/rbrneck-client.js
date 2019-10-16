@@ -454,8 +454,16 @@ exports.createComment = function(comment, id, accessToken, callback) {
     const status = request.status
 
     switch(status) {
-      case 200:
+      case 201:
         callback([])
+        break
+
+      case 400:
+        callback(['Bad Request'])
+        break
+
+      case 401:
+        callback(['Not Authorized'])
         break
 
       case 404:

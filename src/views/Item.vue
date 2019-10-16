@@ -32,25 +32,44 @@
         </div>
 
         <div id="item-comments">
-            <span v-if="comments.length>0">
+            <span v-if="comments.length > 0">
+                <transition-group name="comments">
                 <div class="comment-container graytext" v-for="comment in comments" :key="comment.id">
-                    <div class="comment-container-content robotoThin ">{{comment.text}}</div>
+                        <div class="comment-container-content robotoThin">{{comment.text}}</div>     
                 </div>
+                </transition-group>
             </span>
         </div>
 
-        <div id="item-comment-form" v-if="((user.id == item.accountId) && (item.watched == 0))">
-            <form @submit.prevent v-if="isWatching">
-                <textarea name="comment-input" id="comment-input" class="dropshadow redtext robotoRegular" cols="30" rows="10" v-model="newComment" placeholder="add a comment..."></textarea>
-                <input type="submit" value="post" id="comment-submit" class="dropshadow oswald uppercase redtext">
-            </form>
-        </div>
+        <transition name="fade">
+            <div id="item-comment-form" v-if="((user.id == item.accountId) && (item.watched == 0) && isWatching)">
+                <form @submit.prevent v-if="isWatching">
+                    <textarea name="comment-input" id="comment-input" class="dropshadow redtext robotoRegular" cols="30" rows="10" v-model="newComment" placeholder="add a comment..."></textarea>
+                    <input type="submit" value="post" id="comment-submit" class="dropshadow oswald uppercase redtext" @click="addComment">
+                </form>
+            </div>
+        </transition>
 
         <transition name="fade">
             <div v-if="managePost" id="manage-post-overlay">
-                <ManagePost :user="user" :item="item" @close="managePost=false"/>
+                <ManagePost :user="user" :item="item" @close="managePost=false; getItems()"/>
             </div>
         </transition>
+
+        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0" class="error-messages robotoRegular whitetext text-align-center">
+                <span v-if="errorsItems.length > 0">
+                    {{errorsItems}}
+                </span>
+                <span v-if="errorsComments.length > 0">
+                    {{errorsComments}}
+                </span>
+                <span v-if="errorsFinish.length > 0">
+                    {{errorsFinish}}
+                </span>
+                <span v-if="errorsNewComment.length > 0">
+                    {{errorsNewComment}}
+                </span>
+        </div>
 
     </div>
 </template>
@@ -63,51 +82,75 @@ export default {
     props: ['user'],
     data() {
         const itemId = this.$route.params.id
+        const user = this.user
         return {
-          comments: [],
-          item: [],
-          errorsItems: [],
-          errorsComments: [],
-          newComment: '',
-          isLoadingItem: true,
-          isLoadingComments: true,
-          errorsFinish: [],
-          isWatching: true,
-          itemId,
-          managePost: false
+            itemId,
+            accountId: user.id,
+            comments: [],
+            item: [],
+            errorsItems: [],
+            errorsComments: [],
+            errorsFinish: [],
+            errorsNewComment: [],
+            newComment: '',
+            commentSuccess: false,
+            isLoadingItem: true,
+            isLoadingComments: true, 
+            isWatching: true,
+            managePost: false
         }
     },
-    mounted() {
-        client.getItemById(this.itemId, (errors, item) => {
-            this.isLoadingItem = false
-            if(errors.length == 0) {
-                this.item = item
-            } else {
-                this.errorsItems = errors
-            }
-        })
-        client.getCommentsByItemId(this.itemId, (errors, comments) => {
-            this.isLoadingComments = false;
-            if (errors.length == 0) {
-                this.comments = comments
-            } else {
-                this.errors = errors
-            }
-        })
+    created() {
+        this.getItems()
+        this.getComments()        
     },
     methods: {
-        finishWatching() {
-            let itemId = this.$route.params.id
-            client.finishWatching(itemId, this.user.accessToken, (errors) => {
+        getItems() {
+            client.getItemById(this.itemId, (errors, item) => {
+                this.isLoadingItem = false
                 if(errors.length == 0) {
-                    this.isWatching = false
-                    console.log(this.isWatching)
+                    this.item = item
                 } else {
-                    this.errorsFinish = errors
-                    console.log(errors)
+                    this.errorsItems = errors
                 }
             })
         },
+        getComments() {
+            client.getCommentsByItemId(this.itemId, (errors, comments) => {
+                this.isLoadingComments = false;
+                if (errors.length == 0) {
+                    this.comments = comments
+                } else {
+                    this.errorsComments = errors
+                }
+            })
+        },
+        finishWatching() {
+            client.finishWatching(this.itemId, this.user.accessToken, (errors) => {
+                if(errors.length == 0) {
+                    this.isWatching = false
+                } else {
+                    this.errorsFinish = errors
+                }
+            })
+        },
+        addComment() {
+            this.commentSuccess = false
+            let comment = {
+                accountId: this.accountId,
+                text: this.newComment
+            }
+            client.createComment(comment, this.itemId, this.user.accessToken, (errors) => {
+                if(errors.length == 0) {
+                    this.comment = comment
+                    this.commentSuccess = true
+                    this.newComment = ''
+                    this.getComments()
+                } else {
+                    this.errorsNewComment = errors
+                }
+            })
+        }
     },
     components: {
       ManagePost
@@ -221,7 +264,17 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s ease-in;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
+}
+
+.comments-enter-active {
+    transition: all .3s ease;
+}
+.comments-enter {
+    transform: translateY(100vh);
+}
+.comments-enter-to {
+    transform: translateY(0)
 }
 </style>

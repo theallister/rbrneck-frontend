@@ -48,7 +48,7 @@
                         <input type="submit" value="save changes" id="form-submit"  class="whitetext red-background uppercase oswald" @click="updateItem">
                     </span>
             </form>
-            <span v-else> item successfully updated 
+            <span v-else class="text-align-center"> item successfully updated 
                 <button class="whitetext uppercase oswald cancel-edit" @click="$emit('close')">OK!</button>
             </span>
         </div>
@@ -131,13 +131,18 @@ export default {
 }
 #manage-post-pop-up button,
 #confirm-delete-form button {
-    margin: 5%;
+    margin: 2.5% 5%;
     padding: 2% 7.5%;
 
     font-size: 1.2em;
 
     border: none;
     border-radius: 20px;
+}
+#confirm-delete-form span {
+    width: 40%;
+    right: 10%;
+    padding:3% 5%;
 }
 
 #edit-post-form {
