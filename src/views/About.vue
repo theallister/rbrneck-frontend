@@ -25,8 +25,7 @@ export default {
     background-size: 200%;
 }
 #background-overlay {
-    width: 100%;    
-    padding-right: 15vw;
+    width: 100%;
     background-color: rgba(142,14,0,0.5);
 }
 #about-container h2 {

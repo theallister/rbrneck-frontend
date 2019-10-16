@@ -55,9 +55,6 @@ export default {
 </script>
 
 <style scoped>
-#feed-container {
-    padding-right: 15vw;
-}
 .feed-item-container {
     width: 100%;
     border-radius: 30px;
