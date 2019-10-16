@@ -1,15 +1,17 @@
 <template>
     <div id="feed-container" class="view-container-main">
 
-        <div class="feed-item-container top-item-container" v-if="user.isSignedIn">
-            <router-link :to="'/additem'" class="no-style-link">
-                    <h2 class="oswald uppercase redtext">
-                        start watching
-                    </h2>     
-            </router-link>
-        </div>
+        <transition name="input-transition">
+            <div class="feed-item-container top-item-container dropshadow" v-if="user.isSignedIn">
+                <router-link :to="'/additem'" class="no-style-link">
+                        <h2 class="oswald uppercase redtext">
+                            start watching
+                        </h2>     
+                </router-link>
+            </div>
+        </transition>
 
-        <div class="feed-item-container" v-for="item in items" :key="item.id">
+        <div class="feed-item-container dropshadow" v-for="item in items" :key="item.id">
             <router-link :to="'/items/' + item.id" class="no-style-link">
                 <p class="feed-item-text whitetext robotoThin">
                     <span class="robotoBold">{{item.username}}</span>
@@ -72,7 +74,9 @@ export default {
 .top-item-container {
     background-color: #fefefe;
     text-align: center;
-    padding: 1.5%;
+    width: 50%;
+    margin: 0 auto 2.5%;
+    padding: 0.5% 1.5%;
     transition: all 0.5s ease;
 }
 .top-item-container:hover {
@@ -95,5 +99,23 @@ export default {
     display: flex;
     align-content: center;
     align-items: center;
+}
+
+.input-transition-enter-active, .input-transition-leave-active {
+    transition: all 0.5s ease;
+}
+.input-transition-enter, .input-transition-leave-to {
+    -webkit-transform: rotateX(-100deg);
+            transform: rotateX(-100deg);
+    -webkit-transform-origin: top;
+            transform-origin: top;
+    opacity: 0;
+}
+.input-transition-enter-to, .input-transition-leave {
+        -webkit-transform: rotateX(0deg);
+            transform: rotateX(0deg);
+    -webkit-transform-origin: top;
+            transform-origin: top;
+    opacity: 1;
 }
 </style>

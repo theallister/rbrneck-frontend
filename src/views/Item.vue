@@ -13,7 +13,7 @@
                     <span v-if="item.watched == 0">is</span>
                     <span v-if="item.watched == 1">was</span>
                     watching</p>
-                <h2 class="oswald uppercase">
+                <h2 class="oswald uppercase textshadow">
                     {{item.title}}
                 </h2>
                 <span v-if="item.series==1">
@@ -21,7 +21,7 @@
                 </span>
             </span>
             <span v-else>
-                <h2 class="oswald uppercase">you <span v-if="item.watched==0"><span v-if="isWatching">are</span></span><span v-if="item.watched==1 || !isWatching">were</span> watching {{item.title}}</h2>
+                <h2 class="oswald uppercase textshadow">you <span v-if="item.watched==0"><span v-if="isWatching">are</span></span><span v-if="item.watched==1 || !isWatching">were</span> watching {{item.title}}</h2>
                 <span v-if="item.series==1">
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
@@ -34,9 +34,10 @@
         <div id="item-comments">
             <span v-if="comments.length > 0">
                 <transition-group name="comments">
-                <div class="comment-container graytext" v-for="comment in comments" :key="comment.id">
-                        <div class="comment-container-content robotoThin">{{comment.text}}</div>     
-                </div>
+                    <div class="comment-container graytext" :class="{'ownItem':(user.id == item.accountId)}" v-for="comment in comments" :key="comment.id">
+                        <div class="comment-container-content robotoThin">{{comment.text}}</div>
+                        <button v-if="user.id == item.accountId" class="delete-comment" @click="confirmDeleteComm=true; commentToDelete=comment.id"><span class="whitetext uppercase robotoRegular text-align-center">delete</span></button>    
+                    </div>
                 </transition-group>
             </span>
         </div>
@@ -51,12 +52,25 @@
         </transition>
 
         <transition name="fade">
-            <div v-if="managePost" id="manage-post-overlay">
+            <div v-if="managePost" class="manage-post-overlay dropshadow">
                 <ManagePost :user="user" :item="item" @close="managePost=false; getItems()"/>
             </div>
         </transition>
 
-        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0" class="error-messages robotoRegular whitetext text-align-center">
+        <transition name="fade">
+            <div v-if="confirmDeleteComm" class="manage-post-overlay dropshadow">
+                <div class="confirmDeleteContainer" v-if="confirmDeleteContainer">
+                    <h2 class="oswald redtext uppercase text-align-center textshadow">Do you want to delete this comment?</h2>
+                    <button class="confirmDeleteBtn confirmDeleteComm oswald uppercase text-align-center whitetext red-background dropshadow" @click="deleteComment">delete</button>
+                    <button class="confirmDeleteBtn cancelDeleteComm oswald uppercase text-align-center whitetext dropshadow" @click="confirmDeleteComm=false; commentToDelete=''">cancel</button>
+                </div>
+                <div v-if="deletedCommentConfirmation" class="confirmDeleteContainer oswald uppercase redtext text-align-center">
+                    <h2>comment deleted</h2> 
+                </div>
+            </div>
+        </transition>
+
+        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0 || errorsDeleteComment.length > 0" class="error-messages robotoRegular whitetext text-align-center">
                 <span v-if="errorsItems.length > 0">
                     {{errorsItems}}
                 </span>
@@ -68,6 +82,9 @@
                 </span>
                 <span v-if="errorsNewComment.length > 0">
                     {{errorsNewComment}}
+                </span>
+                <span v-if="errorsDeleteComment.length > 0">
+                    {{errorsDeleteComment}}
                 </span>
         </div>
 
@@ -97,7 +114,12 @@ export default {
             isLoadingItem: true,
             isLoadingComments: true, 
             isWatching: true,
-            managePost: false
+            managePost: false,
+            commentToDelete: '',
+            confirmDeleteComm: false,
+            confirmDeleteContainer: true,
+            errorsDeleteComment: [],
+            deletedCommentConfirmation: false
         }
     },
     created() {
@@ -150,6 +172,25 @@ export default {
                     this.errorsNewComment = errors
                 }
             })
+        },
+        deleteComment() {
+            client.deleteCommentById(this.commentToDelete, this.user.accessToken, (errors) => {
+                if(errors.length == 0) {
+                    this.commentToDelete = ''        
+                    this.confirmDeleteContainer = false
+                    this.deletedCommentConfirmation = true
+                    setTimeout(() => {
+                        this.deletedCommentConfirmation = false
+                        this.confirmDeleteComm = false
+                        this.confirmDeleteContainer = true
+                    }, 500);
+                    setTimeout(() => {
+                        this.getComments()
+                    }, 600);
+                } else {
+                    this.errorsDeleteComment = errors
+                }
+            })
         }
     },
     components: {
@@ -184,6 +225,7 @@ export default {
         width: 100%;
         margin-bottom: 5%;
         position: relative;
+        transition: all 0.2s ease;
     }
     .comment-container::after {
         content: ' ';
@@ -210,11 +252,36 @@ export default {
         margin: 0.5%;
         font-size: 0.9em;
     }
-    #item-comment-form form {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
+    .comment-container:hover {
+        scale: 0.99;
     }
+    .ownItem:hover {
+        width: 97%;
+    }
+    .delete-comment {
+        display: none;
+        background-color: rgba(0,0,0,0);
+        border: none;
+        height: 100%;
+    }
+    .delete-comment span {
+        writing-mode: vertical-lr;
+    }
+    .ownItem:hover .delete-comment {
+        display: inline;
+        position: absolute;
+        right: -3%;
+        top: 0;
+    }
+    .delete-comment span:hover {
+        font-weight: 900;
+    }
+
+#item-comment-form form {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
     #comment-input {
         width: 80%;
         height: 10vh;
@@ -251,7 +318,7 @@ export default {
     border: none;
     border-radius: 40px;
 }
-#manage-post-overlay {
+.manage-post-overlay {
     width: 64%;
     height: 100vh;
     background-color: rgba(14,14,14,0.5);
@@ -259,6 +326,34 @@ export default {
     position: fixed;
     top: 0;
     right: 0;
+}
+.confirmDeleteContainer {
+    background-color: #fefefe;
+    position: fixed;
+    top: 35%;
+    right: 10%;
+
+    padding: 3% 1%;
+    width: 40%;
+
+    border-radius: 30px;
+
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    align-content: space-around;
+    justify-content: center;
+}
+.confirmDeleteContainer button {
+    border: none;
+    padding: 3% 5%;  
+    box-sizing: content-box;
+    font-size: 1em;
+    border-radius: 30px;
+    margin: 2.5% auto;
+}
+.confirmDeleteContainer button.cancelDeleteComm {
+    background-color: darkgrey;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -268,7 +363,7 @@ export default {
   opacity: 0;
 }
 
-.comments-enter-active {
+.comments-enter-active, .comments-leave-active {
     transition: all .3s ease;
 }
 .comments-enter {
@@ -276,5 +371,8 @@ export default {
 }
 .comments-enter-to {
     transform: translateY(0)
+}
+.comments-leave-to {
+    opacity: 0;
 }
 </style>

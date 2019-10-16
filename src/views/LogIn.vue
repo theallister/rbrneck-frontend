@@ -1,20 +1,19 @@
 <template>
     <div id="signup-container" class="view-container-main red-background thick-border-left whitetext">
-        <h2 class="oswald uppercase text-align-center">Log in</h2>
+        <h2 class="oswald uppercase text-align-center textshadow">Log in</h2>
         <p class="whiteText robotoThin smalltext-50percentwide text-align-center">
-            Log in and start sharing your thoughts!
+            Don't have an account? <router-link :to="'/signup'" class="no-style-link robotoBold whitetext">Sign up</router-link> to start sharing your thoughts!
         </p>
         <form @submit.prevent id="signup-form-container" class="robotoRegular">
             <span class="form-input-container">
                 <label for="input-username">username:</label>
-                <input v-model="username" type="text" name="username" id="input-username" class="redtext">
+                <input v-model="username" type="text" name="username" id="input-username" class="redtext dropshadow grow-hover-small">
             </span>
             <span class="form-input-container">
                 <label for="input-password">password:</label>
-                <input v-model="password" type="password" name="password" id="input-password" class="redtext">
+                <input v-model="password" type="password" name="password" id="input-password" class="redtext dropshadow grow-hover-small">
             </span>
-            <input @click="logIn()" type="submit" value="Log in" id="form-submit" class="redtext uppercase robotoBold">
-            <input @click="deleteCommentById()" type="submit" value="Delete" class="redtext uppercase robotoBold">
+            <input @click="logIn()" type="submit" value="Log in" id="form-submit" class="redtext uppercase oswald dropshadow grow-hover">
         </form>
     </div>
 </template>
@@ -69,5 +68,7 @@ export default {
 
 </script>
 <style scoped>
-
+.no-style-link:hover {
+  text-decoration: underline;
+}
 </style>

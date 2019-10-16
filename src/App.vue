@@ -149,6 +149,15 @@ button, input {
   background-repeat: no-repeat;
   background-position: top center;
 }
+.grow-hover, .grow-hover-small {
+  transition: all 0.3s ease;
+}
+.grow-hover:hover {
+  transform: scale(1.05);
+}
+.grow-hover-small:hover {
+  transform: scale(1.01);
+}
 
 * {
   box-sizing: border-box;
@@ -156,6 +165,8 @@ button, input {
 body {
   margin: 0;
   padding: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 #app {
   min-height: 100vh;
@@ -257,8 +268,13 @@ body {
 }
 
 .dropshadow {
-  -webkit-box-shadow: -1px 1px 3px 0px rgba(0,0,0,0.4);
-  -moz-box-shadow: -1px 1px 3px 0px rgba(0,0,0,0.4);
-  box-shadow: -1px 1px 3px 0px rgba(0,0,0,0.4);
+  -webkit-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+  -moz-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+  box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+}
+.textshadow {
+  -webkit-text-shadow: -1px 1px 1px rgba(0,0,0,0.4);
+  -moz-text-shadow: -1px 1px 1px rgba(0,0,0,0.4);
+  text-shadow: -1px 1px 1px rgba(0,0,0,0.4);
 }
 </style>

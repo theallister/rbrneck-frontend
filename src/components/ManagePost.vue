@@ -10,14 +10,14 @@
     <transition name="fade">
         <span v-if="confirmDelete" id="confirm-delete-form">
             <span v-if="!deleted">
-                <h2 class="oswald uppercase redtext text-align-center">Are you sure you want to delete this item?</h2>
+                <h2 class="oswald uppercase redtext text-align-center textshadow">Are you sure you want to delete this item?</h2>
                 <button class="whitetext red-background oswald uppercase dropshadow" @click="deleteItem">delete</button>
-                <button class="whitetext uppercase oswald cancel-edit" @click="confirmDelete=false">Cancel</button>
+                <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="confirmDelete=false">Cancel</button>
             </span>
             <span v-else>
-            <h2 class="redtext oswald text-align-center uppercase">Item deleted!</h2>
+            <h2 class="redtext oswald text-align-center uppercase textshadow">Item deleted!</h2>
             <router-link :to="'/'">
-                <button class="whitetext uppercase oswald cancel-edit">Back to home</button>
+                <button class="whitetext uppercase oswald cancel-edit dropshadow">Back to home</button>
             </router-link>
             </span>
         </span>
@@ -25,31 +25,31 @@
 
     <transition name="fade">
         <div id="edit-post-form" v-if="editMode" class="robotoRegular redtext">
-            <h2 class="oswald uppercase">you are editing {{item.title}}</h2>
+            <h2 class="oswald uppercase textshadow">you are editing {{item.title}}</h2>
             <form @submit.prevent v-if="!success">
                 <span class="form-input-container">
                     <label for="input-title">new title:</label>
-                    <input type="text" name="username" id="input-title" class="whitetext red-background" v-model="newTitle" @input="titleHint=true">
+                    <input type="text" name="username" id="input-title" class="whitetext red-background dropshadow" v-model="newTitle" @input="titleHint=true">
                     <p class="input-hint robotoRegular" v-if="titleHint">Write your new title; {{newTitle.length}}/50 characters.</p>
                 </span>
                 
                 <span v-if="item.series==1">
                     <span class="form-input-flex-row shorter-input">
                         <label for="season-input">season:</label>
-                        <input type="number" min="0" name="season" id="season-input" class="whitetext red-background" v-model.number="newSeason">
+                        <input type="number" min="0" name="season" id="season-input" class="whitetext red-background dropshadow" v-model.number="newSeason">
                     </span>
                     <span class="form-input-flex-row shorter-input">
                         <label for="episode-input">episode:</label>
-                        <input type="number" min="0" name="episode" id="episode-input" class="whitetext red-background" v-model.number="newEpisode">
+                        <input type="number" min="0" name="episode" id="episode-input" class="whitetext red-background dropshadow" v-model.number="newEpisode">
                     </span>
                 </span>
                     <span class="form-input-flex-row cancel-submit-row">
-                        <button @click="editMode=false" class="whitetext uppercase oswald cancel-edit">cancel</button>
-                        <input type="submit" value="save changes" id="form-submit"  class="whitetext red-background uppercase oswald" @click="updateItem">
+                        <button @click="editMode=false" class="whitetext uppercase oswald cancel-edit dropshadow">cancel</button>
+                        <input type="submit" value="save changes" id="form-submit"  class="whitetext red-background uppercase oswald dropshadow" @click="updateItem">
                     </span>
             </form>
             <span v-else class="text-align-center"> item successfully updated 
-                <button class="whitetext uppercase oswald cancel-edit" @click="$emit('close')">OK!</button>
+                <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="$emit('close')">OK!</button>
             </span>
         </div>
     </transition>
@@ -132,16 +132,18 @@ export default {
 #manage-post-pop-up button,
 #confirm-delete-form button {
     margin: 2.5% 5%;
-    padding: 2% 7.5%;
+    padding: 1% 7.5%;
 
     font-size: 1.2em;
 
     border: none;
     border-radius: 20px;
+
+    white-space: nowrap;
 }
 #confirm-delete-form span {
-    width: 40%;
-    right: 10%;
+    width: 53%;
+    right: 5%;
     padding:3% 5%;
 }
 

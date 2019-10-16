@@ -1,10 +1,10 @@
 <template>
     <div id="addItem-container" class="view-container-main red-background thick-border-left whitetext">
-        <h2 class="oswald uppercase text-align-center">start watching</h2>
+        <h2 class="oswald uppercase text-align-center textshadow">start watching</h2>
         <form @submit.prevent class="robotoRegular">
             <span class="form-input-container">
                 <label for="input-username">what are you watching?</label>
-                <input type="text" name="username" id="input-username" class="redtext" v-model="title" @input="titleHint=true">
+                <input type="text" name="username" id="input-username" class="redtext dropshadow" v-model="title" @input="titleHint=true">
                 <p class="input-hint robotoThin" v-if="titleHint">Write the title of what you are going to watch; {{title.length}}/50 characters.</p>
             </span>
             <span class="form-input-flex-row">
@@ -17,16 +17,16 @@
             <transition name="input-transition">
                 <span v-if="series==1" class="form-input-flex-row shorter-input">
                     <label for="season-input">season</label>
-                    <input type="number" min="0" name="season" id="season-input" class="redtext" v-model.number="season">
+                    <input type="number" min="0" name="season" id="season-input" class="redtext dropshadow" v-model.number="season">
                 </span>
             </transition>
             <transition name="input-transition">
                 <span v-if="series==1 && season > 0" class="form-input-flex-row shorter-input">
                     <label for="episode-input">episode</label>
-                    <input type="number" min="0" name="episode" id="episode-input" class="redtext" v-model.number="episode">
+                    <input type="number" min="0" name="episode" id="episode-input" class="redtext dropshadow" v-model.number="episode">
                 </span>
             </transition>
-            <input type="submit" value="start watching" id="form-submit" class="redtext uppercase robotoBold" @click="addNewItem">
+            <input type="submit" value="start watching" id="form-submit" class="redtext uppercase robotoBold dropshadow" @click="addNewItem">
         </form>
         <div class="error-msg-container robotoRegular">
             <p v-for="error in errors" :key="error.id">
@@ -112,6 +112,10 @@ export default {
 input[type="radio"]:checked + label {
     background-color: #fefefe;
     color: rgba(172,17,0,1);
+
+      -webkit-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+  -moz-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+  box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
 }
 .shorter-input label {
     line-height: 3em;
@@ -133,8 +137,6 @@ input[type="radio"]:checked + label {
     border: none;
 }
 #form-submit {
-    width: 15%;
-
     margin-top: 7%;
 }
 

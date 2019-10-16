@@ -1,19 +1,19 @@
 <template>
     <div id="signup-container" class="view-container-main red-background thick-border-left whitetext">
-        <h2 class="oswald uppercase text-align-center">sign up</h2>
+        <h2 class="oswald uppercase text-align-center textshadow">sign up</h2>
         <p class="whiteText robotoThin smalltext-50percentwide text-align-center">
             Watching a show? Got a lot to say? Join RBRNECK to share your insights with the rest of the community!
         </p>
         <form @submit.prevent id="signup-form-container" class="robotoRegular">
             <span class="form-input-container">
                 <label for="input-username">username:</label>
-                <input type="text" name="username" id="input-username" class="redtext">
+                <input type="text" name="username" id="input-username" class="redtext dropshadow grow-hover-small">
             </span>
             <span class="form-input-container">
                 <label for="input-password">password:</label>
-                <input type="password" name="password" id="input-password" class="redtext">
+                <input type="password" name="password" id="input-password" class="redtext dropshadow grow-hover-small">
             </span>
-            <input type="submit" value="sign up" id="form-submit" class="redtext uppercase robotoBold">
+            <input type="submit" value="sign up" id="form-submit" class="redtext uppercase oswald dropshadow grow-hover">
         </form>
     </div>
 </template>

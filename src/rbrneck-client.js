@@ -513,9 +513,9 @@ exports.getCommentsByItemId = function(itemId, callback) {
   })
 }
 
-exports.deleteCommentById = function(itemId, commentId, accessToken, callback) {
+exports.deleteCommentById = function(commentId, accessToken, callback) {
   const request = new XMLHttpRequest()
-  request.open("DELETE", uri+"/items/"+itemId+"/comments/"+commentId)
+  request.open("DELETE", uri+"/comments/"+commentId)
   request.setRequestHeader("Authorization", "Bearer "+accessToken) //passa in accesstoken som kommer efter inloggning
   request.send()
 
@@ -523,8 +523,12 @@ exports.deleteCommentById = function(itemId, commentId, accessToken, callback) {
     const status = request.status
 
     switch(status) {
-      case 200:
+      case 204:
         callback([])
+        break
+      
+      case 401:
+        callback(["Not Authorized"])
         break
 
       case 404:
