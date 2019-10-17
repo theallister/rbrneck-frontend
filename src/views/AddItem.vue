@@ -30,6 +30,16 @@
         </form>
         <div class="error-msg-container robotoRegular">
             <p v-for="error in errors" :key="error.id">
+                <span v-if="error.includes('Bad request')">
+                    Something is wrong with your input – did you fill all the fieds? <br>
+                    <span v-if="title.length < 3 || title.length > 50">
+                        Your title must be between 3 and 50 characters. <br>
+                    </span>
+                    
+                    <span v-if="series == 1">
+                        You must specify the season and episode.
+                    </span>
+                </span>
                 {{error}}
             </p>
         </div>
@@ -113,15 +123,14 @@ input[type="radio"]:checked + label {
     background-color: #fefefe;
     color: rgba(172,17,0,1);
 
-      -webkit-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
-  -moz-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
-  box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
+    box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.4);
 }
 .shorter-input label {
     line-height: 3em;
 }
 .shorter-input input {
-
     font-size: 1em;
     line-height: 4em;
     text-align: center;
@@ -159,7 +168,8 @@ input[type="radio"]:checked + label {
 }
 
 .error-msg-container {
-    width: 50%;
+    width: 80%;
+    font-size: 0.7em;
     margin: auto;
     text-align: center;
 }
