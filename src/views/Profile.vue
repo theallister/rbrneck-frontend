@@ -15,8 +15,12 @@
         <p class="robotoRegular whitetext">This is what you have watched so far</p>
       </div>
       <div v-for="item in items" :key="item.id" class="profile-items">
-        <router-link :to="'/items/' + item.id" class="profile-item-wrap">
-          <p class="robotoBold whitetext">{{item.title}}</p>
+        <router-link :to="'/items/' + item.id" class="profile-item-wrap no-decor">
+          <div class="item-title-wrap">
+            <p class="robotoBold whitetext">{{item.title}}</p>
+            <p class="robotoThin whitetext" v-if="item.series==1">Season {{item.season}}</p>
+            <p class="robotoThin whitetext" v-if="item.series==1">Episode {{item.episode}}</p>
+          </div>
           <span class="button-arrow-to-right"></span>
         </router-link>
       </div>
@@ -101,9 +105,11 @@ export default {
   height: 57.5px;
   background-color: rgba(0, 0, 0, 0.15);
   border-radius: 15px;
+  margin-bottom: 7.5px;
 }
 .profile-items p {
   padding-left: 10px;
+
 }
 .profile-items:hover {
   padding: 2.5px 2.5px 2.5px 10px;
@@ -166,5 +172,12 @@ export default {
     -webkit-transform-origin: top;
             transform-origin: top;
     opacity: 1;
+}
+.item-title-wrap {
+  display: flex;
+  flex-direction: row;
+}
+.no-decor {
+  text-decoration: none;
 }
 </style>
