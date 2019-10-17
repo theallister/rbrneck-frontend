@@ -65,7 +65,7 @@
                     <button class="confirmDeleteBtn cancelDeleteComm oswald uppercase text-align-center whitetext dropshadow" @click="confirmDeleteComm=false; commentToDelete=''">cancel</button>
                 </div>
                 <div v-if="deletedCommentConfirmation" class="confirmDeleteContainer oswald uppercase redtext text-align-center">
-                    <h2>comment deleted</h2> 
+                    <h2 class="textshadow">comment deleted</h2> 
                 </div>
             </div>
         </transition>

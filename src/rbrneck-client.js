@@ -307,29 +307,29 @@ exports.createItem = function(item, accessToken, callback) {
 
     switch(status) {
       case 201:
-      const location = request.getResponseHeader("Location") //Vi vill ha ID:t och inte hela pathen
-      const id = parseInt(location.substr("/items/".length)) //Genom att göra detta (ta bort stringen före numret)
-      callback([], id) //sedan skickar vi id:t och en tom errors array
-      break
-
-      case 422:
-        callback(["Unprocessable entity"])
-        break
-
-      case 401:
-        callback(["Not Authorized"])
+        const location = request.getResponseHeader("Location") //Vi vill ha ID:t och inte hela pathen
+        const id = parseInt(location.substr("/items/".length)) //Genom att göra detta (ta bort stringen före numret)
+        callback([], id) //sedan skickar vi id:t och en tom errors array
         break
 
       case 400:
         callback(["Bad request"])
         break
 
+      case 401:
+        callback(["Not Authorized"])
+        break
+
+      case 422:
+        callback(["Unprocessable entity"])
+        break
+
       case 500:
-      callback(["Server error"])
-      break
+        callback(["Server error"])
+        break
 
       default:
-      callback(["Server error"])
+        callback(["Server error"])
 
     }
   })
