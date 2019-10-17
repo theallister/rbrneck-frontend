@@ -30,17 +30,21 @@
         </form>
         <div class="error-msg-container robotoRegular">
             <p v-for="error in errors" :key="error.id">
-                <span v-if="error.includes('Bad request')">
+                <span v-if="error.includes('badRequest')">
                     Something is wrong with your input – did you fill all the fieds? <br>
                     <span v-if="title.length < 3 || title.length > 50">
                         Your title must be between 3 and 50 characters. <br>
-                    </span>
-                    
+                    </span>    
                     <span v-if="series == 1">
-                        You must specify the season and episode.
+                        You must specify the season and episode. <br>
                     </span>
                 </span>
-                {{error}}
+                <span v-if="error.includes('notAuthorized')">
+                    Item can't be added – are you logged in? <br>
+                </span>
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
+                </span>
             </p>
         </div>
     </div>

@@ -15,6 +15,16 @@
             </span>
             <input @click="logIn()" type="submit" value="Log in" id="form-submit" class="redtext uppercase oswald dropshadow grow-hover">
         </form>
+        <div class="error-msg-container robotoRegular">
+            <p v-for="error in errors" :key="error.id">
+                <span v-if="error.includes('invalidClient')">
+                    The username or password you entered is wrong. <br>
+                </span>
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
+                </span>
+            </p>
+        </div>
     </div>
 </template>
 <script>
@@ -47,17 +57,6 @@ export default {
             //Redirect till hem
             this.$router.push('/')
 
-          } else {
-            this.errors = errors
-          }
-        })
-      },
-      deleteCommentById() {
-        let itemId = 1
-        let commentId = 2
-        client.deleteCommentById(itemId, commentId, this.user.accessToken, (errors) => {
-          if (errors.length == 0) {
-            this.success = true
           } else {
             this.errors = errors
           }

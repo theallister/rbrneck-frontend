@@ -31,15 +31,19 @@ exports.login = function(username, password, callback) {
         break
 
       case 400:
-        callback(["Invalid client"])
+        callback(["invalidClient"])
+        break
+
+      case 404:
+        callback(["notFound"])
         break
 
       case 500:
-        callback(["Unknown server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Unknown server error"])
+        callback(["serverError"])
     }
   })
 }
@@ -313,23 +317,19 @@ exports.createItem = function(item, accessToken, callback) {
         break
 
       case 400:
-        callback(["Bad request"])
+        callback(["badRequest"])
         break
 
       case 401:
-        callback(["Not Authorized"])
-        break
-
-      case 422:
-        callback(["Unprocessable entity"])
+        callback(["notAuthorized"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server error"])
+        callback(["serverError"])
 
     }
   })

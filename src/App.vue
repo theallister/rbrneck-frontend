@@ -230,6 +230,14 @@ body {
   flex-flow: column;
   align-content: space-around;
 }
+
+.error-msg-container {
+    width: 80%;
+    font-size: 0.7em;
+    margin: auto;
+    text-align: center;
+}
+
 /* slide left*/
 .slide-left-enter-active, .slide-left-leave-active {
   transition: all 0.4s ease;
