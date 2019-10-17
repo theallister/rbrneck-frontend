@@ -459,27 +459,27 @@ exports.createComment = function(comment, id, accessToken, callback) {
         break
 
       case 400:
-        callback(['Bad Request'])
+        callback(['badRequest'])
         break
 
       case 401:
-        callback(['Not Authorized'])
+        callback(['notAuthorized'])
         break
 
       case 404:
-       callback(["No id found"])
+       callback(["notFound"])
        break
 
       case 422:
-        callback(["Unprocessable entry"])
+        callback(["unprocessableEntry"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["No id found"])
+        callback(["serverError"])
     }
   })
 }

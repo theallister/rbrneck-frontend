@@ -26,7 +26,9 @@
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
                 <span v-if="isWatching">
-                    <button v-if="item.watched==0" class="dropshadow finish-watching oswald uppercase redtext grow-hover" @click="finishWatching">finish watching</button>
+                    <button v-if="item.watched==0" class="dropshadow finish-watching oswald uppercase redtext grow-hover" @click="finishWatching">
+                        finish watching
+                    </button>
                 </span>
             </span>
         </div>
@@ -70,22 +72,57 @@
             </div>
         </transition>
 
-        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0 || errorsDeleteComment.length > 0" class="error-messages robotoRegular whitetext text-align-center">
-                <span v-if="errorsItems.length > 0">
-                    {{errorsItems}}
+
+        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0 || errorsDeleteComment.length > 0"  class="error-msg-container robotoRegular">
+            <p v-for="error in errorsItems" :key="error.id">
+                <span v-if="error.includes('notFound')">
+                    This item can't be found. <br>
                 </span>
-                <span v-if="errorsComments.length > 0">
-                    {{errorsComments}}
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
                 </span>
-                <span v-if="errorsFinish.length > 0">
-                    {{errorsFinish}}
+            </p>
+            <p v-for="error in errorsComments" :key="error.id">
+                <span v-if="error.includes('notFound')">
+                    No comments found. <br>
                 </span>
-                <span v-if="errorsNewComment.length > 0">
-                    {{errorsNewComment}}
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
                 </span>
-                <span v-if="errorsDeleteComment.length > 0">
-                    {{errorsDeleteComment}}
+            </p>
+            <p v-for="error in errorsFinish" :key="error.id">
+                <span v-if="error.includes('notFound')">
+                    This item can't be found. <br>
                 </span>
+                <span v-if="error.includes('notAuthorized')">
+                    You are not authorized to perform this action. <br>
+                </span>
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
+                </span>
+            </p>
+            <p v-for="error in errorsNewComment" :key="error.id">
+                <span v-if="error.includes('badRequest')">
+                    The comment must be between 5-250 characters. <br>
+                </span>
+                <span v-if="error.includes('notAuthorized')">
+                    You are not authorized to create a comment. <br>
+                </span>
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
+                </span>
+            </p>
+            <p v-for="error in errorsDeleteComment" :key="error.id">
+                <span v-if="error.includes('notFound')">
+                    The comment can't be found. <br>
+                </span>
+                <span v-if="error.includes('notAuthorized')">
+                    You are not authorized to delete this comment. <br>
+                </span>
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later <br>
+                </span>
+            </p>
         </div>
 
     </div>

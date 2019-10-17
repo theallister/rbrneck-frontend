@@ -35,8 +35,8 @@
                     <span v-if="title.length < 3 || title.length > 50">
                         Your title must be between 3 and 50 characters. <br>
                     </span>    
-                    <span v-if="series == 1">
-                        You must specify the season and episode. <br>
+                    <span v-if="series == 1 && (season==0 || episode==0)">
+                        You must specify season and episode. <br>
                     </span>
                 </span>
                 <span v-if="error.includes('notAuthorized')">
@@ -169,12 +169,5 @@ input[type="radio"]:checked + label {
     -webkit-transform-origin: top;
             transform-origin: top;
     opacity: 1;
-}
-
-.error-msg-container {
-    width: 80%;
-    font-size: 0.7em;
-    margin: auto;
-    text-align: center;
 }
 </style>
