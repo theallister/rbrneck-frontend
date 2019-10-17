@@ -7,19 +7,48 @@
         <form @submit.prevent id="signup-form-container" class="robotoRegular">
             <span class="form-input-container">
                 <label for="input-username">username:</label>
-                <input type="text" name="username" id="input-username" class="redtext dropshadow grow-hover-small">
+                <input type="text" name="username" id="input-username" v-model="username" class="redtext dropshadow grow-hover-small">
             </span>
             <span class="form-input-container">
                 <label for="input-password">password:</label>
-                <input type="password" name="password" id="input-password" class="redtext dropshadow grow-hover-small">
+                <input type="password" name="password" id="input-password" v-model="password" class="redtext dropshadow grow-hover-small">
             </span>
-            <input type="submit" value="sign up" id="form-submit" class="redtext uppercase oswald dropshadow grow-hover">
+            <input type="submit" value="sign up" id="form-submit" @click="createAccount()" class="redtext uppercase oswald dropshadow grow-hover">
         </form>
     </div>
 </template>
 <script>
+const client = require("../rbrneck-client")
+
 export default {
-    name: 'signup'
+    name: 'signup',
+    data() {
+      return {
+        username: "",
+        password: "",
+        success: Boolean,
+        errors: [],
+
+      }
+    },
+    methods: {
+      createAccount() {
+        let account = {
+          username: this.username,
+          password: this.password
+        }
+        client.createAccount(account, (errors, id) => {
+          if (errors.length == 0) {
+            this.success = true
+            this.$router.push('/login')
+
+          } else {
+            this.errors = errors
+          }
+        })
+      }
+    }
+
 }
 </script>
 <style>
