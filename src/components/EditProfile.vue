@@ -6,7 +6,11 @@
       <input type="text" name="username" id="input-username" v-model="newUsername">
       <label for="input-username" class="robotoBold whitetext">New Password</label>
       <input type="password" name="password" id="input-password" v-model="newPassword">
-      <p class="submit-button robotoBold whitetext" @click="updateAccount()">Submit</p>
+      <div class="button-holder">
+        <p class="submit-button robotoBold whitetext" v-if="success==false" @click="updateAccount()">Submit</p>
+        <p class="robotoBold whitetext" v-if="success==true">Success!</p>
+        <p class="submit-button-close robotoBold whitetext" v-if="success==true"  @click="resetSuccess(); updateUserProp(); $emit('close');">Close</p>
+      </div>
     </form>
 
   </div>
@@ -24,7 +28,7 @@ export default {
       newPassword: "",
 
       errors: [],
-      success: Boolean,
+      success: false,
     }
   },
   methods: {
@@ -36,11 +40,16 @@ export default {
       client.updateAccountById(this.user.id, updatedAccount, this.user.accessToken, (errors) => {
         if (errors.length == 0) {
           this.success = true
-
         } else {
           this.errors = errors
         }
       })
+    },
+    resetSuccess() {
+      this.success = false
+    },
+    updateUserProp() {
+      this.user.username = this.newUsername
     }
   }
 }
@@ -83,10 +92,27 @@ export default {
 
 }
 .submit-button {
+  margin-left: 15px;
   display: flex;
   justify-content: center;
   align-self: center;
   width: 35%;
+  padding: 11px 12px 11px 12px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  font-size: 12px;
+  text-transform: uppercase;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+.submit-button-close {
+  margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 20%;
   padding: 11px 12px 11px 12px;
   background-color: rgba(0, 0, 0, 0.15);
   border-radius: 15px;
@@ -102,6 +128,12 @@ export default {
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 15px;
 
+}
+.button-holder {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 </style>

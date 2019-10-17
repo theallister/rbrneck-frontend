@@ -3,11 +3,14 @@
     <div id="profile" v-if="this.user.isSignedIn == true">
       <div class="profile-header">
         <h1 class="oswald whitetext uppercase">Hello, {{this.user.username}}</h1>
-        <p id="edit-profile" class="edit-button robotoThin whitetext" @click="editProfile = true">Edit Account</p>
+        <p id="edit-profile" class="edit-button robotoThin whitetext" v-if="editProfile==false" @click="editProfile = true">Edit Account</p>
+        <p id="close-edit-profile" class="edit-button robotoThin whitetext" v-if="editProfile==true" @click="editProfile = false">Stop editing</p>
       </div>
-      <div class="edit-profile-section" v-if="editProfile==true">
-        <EditProfile :user="this.user"/>
-      </div>
+      <transition name="input-transition">
+        <div class="edit-profile-section" v-if="editProfile==true">
+          <EditProfile :user="this.user" @close="editProfile = false "/>
+        </div>
+      </transition>
       <div class="profile-items-header">
         <p class="robotoRegular whitetext">This is what you have watched so far</p>
       </div>
@@ -43,7 +46,6 @@ export default {
       specificItems: [],
       errors: [],
       success: Boolean,
-
       editProfile: false,
     }
   },
@@ -147,5 +149,22 @@ export default {
   flex-wrap: wrap;
   flex-direction: column;
   width: 100%;
+}
+.input-transition-enter-active, .input-transition-leave-active {
+    transition: all 0.5s ease;
+}
+.input-transition-enter, .input-transition-leave-to {
+    -webkit-transform: rotateX(-100deg);
+            transform: rotateX(-100deg);
+    -webkit-transform-origin: top;
+            transform-origin: top;
+    opacity: 0;
+}
+.input-transition-enter-to, .input-transition-leave {
+        -webkit-transform: rotateX(0deg);
+            transform: rotateX(0deg);
+    -webkit-transform-origin: top;
+            transform-origin: top;
+    opacity: 1;
 }
 </style>
