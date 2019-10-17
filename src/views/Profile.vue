@@ -12,7 +12,8 @@
         </div>
       </transition>
       <div class="profile-items-header">
-        <p class="robotoRegular whitetext">This is what you have watched so far</p>
+        <p class="robotoRegular whitetext" v-if="items.length > 0">This is what you have watched so far</p>
+        <p class="robotoRegular whitetext" v-else>Your watch history is empty.</p>
       </div>
       <div v-for="item in items" :key="item.id" class="profile-items">
         <router-link :to="'/items/' + item.id" class="profile-item-wrap no-decor">
