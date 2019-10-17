@@ -26,7 +26,7 @@
                     <p class="robotoRegular uppercase item-information-details">season {{item.season}} | episode {{item.episode}}</p>
                 </span>
                 <span v-if="isWatching">
-                    <button v-if="item.watched==0" class="dropshadow finish-watching oswald uppercase redtext" @click="finishWatching">finish watching</button>
+                    <button v-if="item.watched==0" class="dropshadow finish-watching oswald uppercase redtext grow-hover" @click="finishWatching">finish watching</button>
                 </span>
             </span>
         </div>
@@ -246,7 +246,7 @@ export default {
             right: 0
         }
     .comment-container-content {
-        border-radius: 15px;
+        border-radius: 10px;
         background-color: #fefefe;
         padding: 2.5%;
         margin: 0.5%;
@@ -316,7 +316,7 @@ export default {
     font-size: 1.2em;
     padding: 0.5% 2%;
     border: none;
-    border-radius: 40px;
+    border-radius: 10px;
 }
 .manage-post-overlay {
     width: 64%;
@@ -336,7 +336,7 @@ export default {
     padding: 3% 1%;
     width: 40%;
 
-    border-radius: 30px;
+    border-radius: 10px;
 
     display: flex;
     flex-flow: column;
@@ -346,10 +346,10 @@ export default {
 }
 .confirmDeleteContainer button {
     border: none;
-    padding: 3% 5%;  
+    padding: 1% 5%;  
     box-sizing: content-box;
     font-size: 1em;
-    border-radius: 30px;
+    border-radius: 10px;
     margin: 2.5% auto;
 }
 .confirmDeleteContainer button.cancelDeleteComm {

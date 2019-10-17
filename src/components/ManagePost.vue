@@ -121,7 +121,7 @@ export default {
     padding: 3% 0;
     width: 25%;
 
-    border-radius: 30px;
+    border-radius: 10px;
 
     display: flex;
     flex-flow: column;
@@ -132,12 +132,12 @@ export default {
 #manage-post-pop-up button,
 #confirm-delete-form button {
     margin: 2.5% 5%;
-    padding: 1% 7.5%;
+    padding: 1% 5%;
 
     font-size: 1.2em;
 
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
 
     white-space: nowrap;
 }
@@ -193,11 +193,11 @@ export default {
     border: none;
 }
 #form-submit, .cancel-edit {
-    padding: 3% 5%;  
+    padding: 1% 5%;  
     box-sizing: content-box;
     font-size: 1em;
     border: none;
-    border-radius: 30px;
+    border-radius: 10px;
     margin: 2.5% auto;
 }
 .cancel-edit {
