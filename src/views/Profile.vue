@@ -1,22 +1,38 @@
 <template>
-  <div id="profile">
-    <div class="profile-header">
-      <h1 class="oswald whitetext uppercase">Hello, {{this.user.username}}</h1>
+  <div id="this is just a holder for conditional rendering">
+    <div id="profile" v-if="this.user.isSignedIn == true">
+      <div class="profile-header">
+        <h1 class="oswald whitetext uppercase">Hello, {{this.user.username}}</h1>
+        <p id="edit-profile" class="edit-button robotoThin whitetext" @click="editProfile = true">Edit Account</p>
+      </div>
+      <div class="edit-profile-section" v-if="editProfile==true">
+        <EditProfile :user="this.user"/>
+      </div>
+      <div class="profile-items-header">
+        <p class="robotoRegular whitetext">This is what you have watched so far</p>
+      </div>
+      <div v-for="item in items" :key="item.id" class="profile-items">
+        <router-link :to="'/items/' + item.id" class="profile-item-wrap">
+          <p class="robotoBold whitetext">{{item.title}}</p>
+          <span class="button-arrow-to-right"></span>
+        </router-link>
+      </div>
     </div>
-    <div class="profile-items-header">
-      <p class="robotoRegular whitetext">This is what you have watched so far</p>
-    </div>
-    <div v-for="item in items" :key="item.id" class="profile-items">
-      <router-link :to="'/items/' + item.id" class="profile-item-wrap">
-        <p class="robotoBold whitetext">{{item.title}}</p>
-        <span class="button-arrow-to-right"></span>
-      </router-link>
+
+    <div class="profile-else" v-else>
+      <div class="profile-header">
+        <h1 class="oswald whitetext uppercase">Hello, Guest</h1>
+      </div>
+      <div class="profile-items-header">
+        <p class="robotoRegular whitetext">You have to be logged in to view this page.</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 const client = require("../rbrneck-client")
+import EditProfile from '@/components/EditProfile.vue'
 
 export default {
   name: "profile",
@@ -26,12 +42,16 @@ export default {
       items: [],
       specificItems: [],
       errors: [],
-
       success: Boolean,
+
+      editProfile: false,
     }
   },
+  components: {
+    EditProfile
+  },
   created() {
-    client.getItemsByAccountId(this.user.id,(errors, items) => {
+    client.getItemsByAccountId(this.user.id, (errors, items) => {
       if (errors.length == 0) {
         this.success = true
         this.items = items
@@ -49,14 +69,24 @@ export default {
   padding: 25px;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   width: 100%;
 }
 .profile-header {
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  align-items: center;
+
   border-radius: 33px;
 }
 .profile-header h1{
+  width: 50%;
   padding: 10px 2.5px 2.5px 10px;
+}
+.profile-header #edit-profile{
+  width: auto;
+
 }
 .profile-items-header p {
   padding: 2.5px 2.5px 2.5px 10px;
@@ -88,5 +118,34 @@ export default {
 }
 .profile-item-wrap span{
   height: 25px;
+}
+
+.edit-button {
+  padding: 11px 12px 11px 12px;
+  width: auto;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  font-size: 12px;
+  text-transform: uppercase;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+.edit-button:hover {
+  transform: scale(1.02);
+  width: auto;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.profile-else {
+  padding: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 100%;
 }
 </style>
