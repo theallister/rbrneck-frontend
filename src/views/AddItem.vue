@@ -28,7 +28,7 @@
             </transition>
             <input type="submit" value="start watching" id="form-submit" class="redtext uppercase robotoBold dropshadow" @click="addNewItem">
         </form>
-        <div class="error-msg-container robotoRegular">
+        <div class="error-msg-container robotoRegular whitetext">
             <p v-for="error in errors" :key="error.id">
                 <span v-if="error.includes('badRequest')">
                     Something is wrong with your input – did you fill all the fieds? <br>

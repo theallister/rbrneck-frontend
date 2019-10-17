@@ -1,5 +1,6 @@
 <template>
 <div class="dropshadow">
+
     <transition name="fade">
         <div id="manage-post-pop-up" v-if="!editMode && !confirmDelete">
             <button class="whitetext red-background oswald uppercase dropshadow" @click="editMode=true">edit</button>
@@ -7,12 +8,16 @@
             <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="$emit('close')">cancel</button>
         </div>
     </transition>
+
     <transition name="fade">
         <span v-if="confirmDelete && !deleted" id="confirm-delete-form">
             <span v-if="!deleted">
                 <h2 class="oswald uppercase redtext text-align-center textshadow">Are you sure you want to delete this item?</h2>
                 <button class="whitetext red-background oswald uppercase dropshadow" @click="deleteItem">delete</button>
                 <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="confirmDelete=false">Cancel</button>
+                <p v-if="errorsDelete.length>0" class="error-msg-container robotoRegular redtext">
+                    Something went wrong... Try again later!
+                </p>
             </span>
             <span v-else>
                 <h2 class="redtext oswald text-align-center uppercase textshadow">Item deleted!</h2>
@@ -47,14 +52,34 @@
                         <button @click="editMode=false" class="whitetext uppercase oswald cancel-edit dropshadow">cancel</button>
                         <input type="submit" value="save changes" id="form-submit"  class="whitetext red-background uppercase oswald dropshadow" @click="updateItem">
                     </span>
+                <span v-if="errorsUpdate.length > 0">
+                    <p v-for="error in errorsUpdate" :key="error.id" class="error-msg-container robotoRegular redtext">
+                        <span v-if="error.includes('badRequest')">
+                        Something is wrong with your input – did you fill all the fieds? <br>
+                        <span v-if="newTitle.length < 3 || newTitle.length > 50">
+                            Your title must be between 3 and 50 characters. <br>
+                        </span>    
+                        <span v-if="item.series == 1 && (newSeason == 0 || newEpisode == 0)">
+                            You must specify season and episode. <br>
+                        </span>
+                        </span>
+                        <span v-if="error.includes('notAuthorized')">
+                            You are not authorized to edit this post. <br>
+                        </span>
+                        <span v-if="error.includes('serverError')">
+                            Something went wrong... Try again later! <br>
+                        </span>
+                    </p>
+                </span>
             </form>
+
             <span v-else class="text-align-center"> item successfully updated 
                 <button class="whitetext uppercase oswald cancel-edit dropshadow" @click="$emit('close')">OK!</button>
             </span>
+
         </div>
     </transition>
-    
-    
+       
 </div>
 </template>
 
@@ -74,7 +99,8 @@ export default {
             newEpisode: 0,
             success: false,
             deleted: false,
-            errors: [],
+            errorsUpdate: [],
+            errorsDelete: [],
             titleHint: false,
             confirmDelete: false
         }
@@ -94,7 +120,7 @@ export default {
                 if(errors.length == 0) {
                     this.success = true
                 } else {
-                    this.errors = errors
+                    this.errorsUpdate = errors
                 }
             })
         },
@@ -103,7 +129,7 @@ export default {
                 if(errors.length == 0) {
                     this.deleted = true
                 } else {
-                    this.errors.push(errors)
+                    this.errorsDelete = errors
                 }
             })
         }

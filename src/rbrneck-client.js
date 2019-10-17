@@ -167,7 +167,7 @@ exports.updateAccountById = function(id, updatedAccount, accessToken, callback) 
         break
 
       case 422:
-        callback(["Unprocessable entry"])
+        callback(["unprocessableEntry"])
         break
 
       case 500:
@@ -256,15 +256,15 @@ exports.getItemById = function(id, callback) {
         break
 
       case 404:
-        callback(["Not found"])
+        callback(["notFound"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server error"])
+        callback(["serverError"])
     }
   })
 }
@@ -352,27 +352,27 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
         break
 
       case 400:
-        callback(["Bad Request"])
+        callback(["badRequest"])
         break
 
       case 401:
-        callback(["Not Authorized"])
+        callback(["notAuthorized"])
         break
 
       case 404:
-        callback(["Not found"])
+        callback(["notFound"])
         break
 
       case 422:
-        callback(["Unprocessable entry"])
+        callback(["unprocessableEntry"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server error"])
+        callback(["serverError"])
 
     }
   })
@@ -394,20 +394,19 @@ exports.finishWatching = function(id, accessToken, callback) {
         callback([])
         break
 
-      case 404:
-        callback(["Not found"])
-        break
+      case 401:
+        callback(["notAuthorized"])
 
-      case 422:
-        callback(["Unprocessable entry"])
+      case 404:
+        callback(["notFound"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server error"])
+        callback(["serverError"])
 
     }
   })
@@ -429,15 +428,15 @@ exports.deleteItemById = function(id, accessToken, callback) {
         break
 
       case 404:
-        callback(["Not found"])
+        callback(["notFound"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server error"])
+        callback(["serverError"])
 
     }
   })
@@ -470,10 +469,6 @@ exports.createComment = function(comment, id, accessToken, callback) {
        callback(["notFound"])
        break
 
-      case 422:
-        callback(["unprocessableEntry"])
-        break
-
       case 500:
         callback(["serverError"])
         break
@@ -500,15 +495,15 @@ exports.getCommentsByItemId = function(itemId, callback) {
         break
 
       case 404:
-        callback(["Item id not found"])
+        callback(["notFound"])
         break
 
       case 500:
-        callback(["Server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server error"])
+        callback(["serverError"])
     }
   })
 }
@@ -528,19 +523,19 @@ exports.deleteCommentById = function(commentId, accessToken, callback) {
         break
 
       case 401:
-        callback(["Not Authorized"])
+        callback(["notAuthorized"])
         break
 
       case 404:
-        callback(["Not found"])
+        callback(["notFound"])
         break
 
       case 500:
-        callback(["Server errror"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Server errror"])
+        callback(["serverError"])
     }
   })
 }

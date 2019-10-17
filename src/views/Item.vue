@@ -73,7 +73,7 @@
         </transition>
 
 
-        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0 || errorsDeleteComment.length > 0"  class="error-msg-container robotoRegular">
+        <div v-if="errorsItems.length > 0 || errorsComments.length > 0 || errorsFinish.length > 0 || errorsNewComment.length > 0 || errorsDeleteComment.length > 0"  class="error-msg-container robotoRegular whitetext">
             <p v-for="error in errorsItems" :key="error.id">
                 <span v-if="error.includes('notFound')">
                     This item can't be found. <br>
@@ -169,6 +169,7 @@ export default {
                 this.isLoadingItem = false
                 if(errors.length == 0) {
                     this.item = item
+                    this.errorsItems = []
                 } else {
                     this.errorsItems = errors
                 }
@@ -179,6 +180,7 @@ export default {
                 this.isLoadingComments = false;
                 if (errors.length == 0) {
                     this.comments = comments
+                    this.errorsComments = []
                 } else {
                     this.errorsComments = errors
                 }
@@ -188,6 +190,7 @@ export default {
             client.finishWatching(this.itemId, this.user.accessToken, (errors) => {
                 if(errors.length == 0) {
                     this.isWatching = false
+                    this.errorsFinish = []
                 } else {
                     this.errorsFinish = errors
                 }
@@ -205,6 +208,7 @@ export default {
                     this.commentSuccess = true
                     this.newComment = ''
                     this.getComments()
+                    this.errorsNewComment = []
                 } else {
                     this.errorsNewComment = errors
                 }
@@ -224,6 +228,7 @@ export default {
                     setTimeout(() => {
                         this.getComments()
                     }, 600);
+                    this.errorsDeleteComment = []
                 } else {
                     this.errorsDeleteComment = errors
                 }
