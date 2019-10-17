@@ -10,7 +10,7 @@
     </transition>
 
     <transition name="fade">
-        <span v-if="confirmDelete && !deleted" id="confirm-delete-form">
+        <span v-if="confirmDelete" id="confirm-delete-form">
             <span v-if="!deleted">
                 <h2 class="oswald uppercase redtext text-align-center textshadow">Are you sure you want to delete this item?</h2>
                 <button class="whitetext red-background oswald uppercase dropshadow" @click="deleteItem">delete</button>

@@ -42,6 +42,9 @@
                     </div>
                 </transition-group>
             </span>
+            <div v-else class="robotoRegular whitetext no-comments-msg">
+                There are no comments yet...
+            </div>
         </div>
 
         <transition name="fade">
@@ -237,8 +240,7 @@ export default {
     },
     components: {
       ManagePost
-    },
-   
+    }
 }
 </script>
 <style scoped>
@@ -260,9 +262,14 @@ export default {
     }
 #item-comments {
     flex-basis: 70vh;
-    flex-grow: 0;
+    flex-grow: 1;
     overflow: scroll
 }
+    .no-comments-msg {
+        margin-top: 30%;
+        font-size: 0.8em;
+        text-align: center;
+    }
     .comment-container {
         width: 100%;
         margin-bottom: 5%;
