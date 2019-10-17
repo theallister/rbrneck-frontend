@@ -67,21 +67,23 @@ exports.createAccount = function(account, callback) { //Create an account based 
         break
 
       case 422:
-        errors = JSON.parse(request.responseText)
-        callback([errors])
+        callback(["unprocessableEntry"])
         break
 
       case 400:
-        errors = JSON.parse(request.responseText) //vad vi får tillbaka när statusen är 400(?)
-        callback([errors])
+        callback(["badRequest"])
+        break
+
+      case 409:
+        callback(["usernameTaken"])
         break
 
       case 500:
-        callback(["Unknown server error"])
+        callback(["serverError"])
         break
 
       default:
-        callback(["Unknown server error"])
+        callback(["serverError"])
     }
 
   })

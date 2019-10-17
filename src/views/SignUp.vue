@@ -7,14 +7,32 @@
         <form @submit.prevent id="signup-form-container" class="robotoRegular">
             <span class="form-input-container">
                 <label for="input-username">username:</label>
-                <input type="text" name="username" id="input-username" v-model="username" class="redtext dropshadow grow-hover-small">
+                <input type="text" name="username" id="input-username" v-model="username" class="redtext dropshadow grow-hover-small" @input="usernameHint=true">
+                <p class="input-hint robotoThin" v-if="usernameHint">Your username may contain letters and numbers; between 3 and 15 characters</p>
             </span>
             <span class="form-input-container">
                 <label for="input-password">password:</label>
-                <input type="password" name="password" id="input-password" v-model="password" class="redtext dropshadow grow-hover-small">
+                <input type="password" name="password" id="input-password" v-model="password" class="redtext dropshadow grow-hover-small" @input="passwordHint=true">
+                <p class="input-hint robotoThin" v-if="passwordHint">Your password may contain letters and numbers; between 5 and 20 characters</p>
             </span>
             <input type="submit" value="sign up" id="form-submit" @click="createAccount()" class="redtext uppercase oswald dropshadow grow-hover">
         </form>
+        <div class="error-msg-container robotoRegular whitetext">
+            <p v-for="error in errors" :key="error.id">
+                <span v-if="error.includes('badRequest')">
+                    Your username must be 3-15 characters, password 5-20 characters. <br>
+                </span>
+                <span v-if="error.includes('unprocessableEntry')">
+                    Username and password may only contain letters and numbers. <br>
+                </span>
+                <span v-if="error.includes('usernameTaken')">
+                    The username is taken! Try another one. <br>
+                </span>
+                <span v-if="error.includes('serverError')">
+                    Something went wrong... Try again later! <br>
+                </span>
+            </p>
+        </div>
     </div>
 </template>
 <script>
@@ -28,7 +46,8 @@ export default {
         password: "",
         success: Boolean,
         errors: [],
-
+        usernameHint: false,
+        passwordHint: false
       }
     },
     methods: {

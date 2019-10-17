@@ -237,6 +237,11 @@ body {
     margin: auto;
     text-align: center;
 }
+.input-hint {
+    font-size: 0.8em;
+    text-align: right;
+    margin-top: 0;
+}
 
 /* slide left*/
 .slide-left-enter-active, .slide-left-leave-active {

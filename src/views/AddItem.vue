@@ -94,11 +94,6 @@ export default {
 }
 </script>
 <style scoped>
-.input-hint {
-    font-size: 0.8em;
-    text-align: right;
-    margin-top: 0;
-}
 .form-input-flex-row {
     display: flex;
     flex-flow: row;
