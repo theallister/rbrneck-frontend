@@ -150,7 +150,7 @@ exports.updateAccountById = function(id, updatedAccount, accessToken, callback) 
 
     switch(status) {
 
-      case 200:
+      case 201:
         callback([])
         break
 
@@ -526,7 +526,7 @@ exports.deleteCommentById = function(commentId, accessToken, callback) {
       case 204:
         callback([])
         break
-      
+
       case 401:
         callback(["Not Authorized"])
         break
