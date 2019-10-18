@@ -95,7 +95,7 @@ export default {
     padding: 1% 5%;
     font-size: 1em;
     border: none;
-    border-radius: 30px;
+    border-radius: 10px;
     display: block;
     margin: 2.5% auto;
 }

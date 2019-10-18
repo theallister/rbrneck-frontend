@@ -156,7 +156,7 @@ exports.updateAccountById = function(id, updatedAccount, accessToken, callback) 
 
     switch(status) {
 
-      case 201:
+      case 204:
         callback([])
         break
 
@@ -349,7 +349,7 @@ exports.updateItemById = function(id, updatedItem, accessToken, callback) {
 
     switch(status) {
 
-      case 201:
+      case 204:
         callback([])
         break
 
